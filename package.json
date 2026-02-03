@@ -1,0 +1,44 @@
+{
+  "name": "place-a-bet",
+  "version": "1.0.0",
+  "description": "A simple, fun betting app for parties and events",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:client": "npm run dev --workspace=client",
+    "build": "npm run build --workspaces --if-present",
+    "build:server": "npm run build --workspace=server",
+    "build:client": "npm run build --workspace=client",
+    "test": "npm run test --workspaces --if-present",
+    "test:server": "npm run test --workspace=server",
+    "test:server:watch": "npm run test:watch --workspace=server",
+    "test:server:coverage": "npm run test:coverage --workspace=server",
+    "test:client": "npm run test --workspace=client",
+    "test:client:watch": "npm run test:watch --workspace=client",
+    "test:client:coverage": "npm run test:coverage --workspace=client",
+    "test:e2e": "npm run test:e2e --workspace=e2e",
+    "test:e2e:ui": "npm run test:e2e:ui --workspace=e2e",
+    "test:e2e:debug": "npm run test:e2e:debug --workspace=e2e",
+    "test:ci": "npm run test:server:coverage && npm run test:client:coverage && npm run test:e2e",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\""
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
