@@ -1,0 +1,236 @@
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.question {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  flex: 1;
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badgeOpen {
+  background-color: #22c55e;
+  color: white;
+}
+
+.badgeClosed {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.badgeSettled {
+  background-color: #6366f1;
+  color: white;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.creator {
+  font-style: italic;
+}
+
+.pool {
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 16px;
+}
+
+.winner {
+  background-color: #fef3c7;
+  border: 2px solid #f59e0b;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.option {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 12px;
+  transition: border-color 0.2s;
+}
+
+.option:hover {
+  border-color: #d1d5db;
+}
+
+.optionWinner {
+  background-color: #fef3c7;
+  border-color: #f59e0b;
+  border-width: 2px;
+}
+
+.optionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.optionLabel {
+  font-weight: 600;
+  font-size: 15px;
+  color: #1a1a1a;
+}
+
+.optionTotal {
+  font-weight: 700;
+  font-size: 16px;
+  color: #22c55e;
+}
+
+.wagerList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.wager {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.wagerCurrentUser {
+  background-color: #dbeafe;
+  font-weight: 600;
+}
+
+.wagerUser {
+  color: #4b5563;
+}
+
+.wagerAmount {
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+.userSummary {
+  background-color: #dbeafe;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.button {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.buttonPrimary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.buttonPrimary:hover {
+  background-color: #2563eb;
+}
+
+.buttonSecondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.buttonSecondary:hover {
+  background-color: #4b5563;
+}
+
+.buttonSuccess {
+  background-color: #22c55e;
+  color: white;
+}
+
+.buttonSuccess:hover {
+  background-color: #16a34a;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .card {
+    padding: 16px;
+  }
+
+  .question {
+    font-size: 16px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+    min-width: unset;
+  }
+}

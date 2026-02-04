@@ -1,8 +1,10 @@
 import { Router, Request, Response } from 'express';
-import { eq, sql } from 'drizzle-orm';
+import { eq, sql, inArray } from 'drizzle-orm';
 import { db } from '../db/index';
-import { parties, bets, wagers } from '../db/schema';
+import { parties, bets, wagers, settlements } from '../db/schema';
 import { createPartySchema, formatZodError } from '../validation/schemas';
+import { io } from '../index';
+import { emitPartyCreated } from '../websocket/events';
 
 const router = Router();
 
@@ -106,6 +108,15 @@ router.post('/', verifyHostPin, async (req: Request, res: Response) => {
       })
       .returning();
 
+    // Emit WebSocket event
+    if (process.env.NODE_ENV !== 'test') {
+      emitPartyCreated(io, {
+        id: newParty.id,
+        name: newParty.name,
+        createdAt: newParty.createdAt
+      });
+    }
+
     res.status(201).json(newParty);
   } catch (error) {
     console.error('Error creating party:', error);
@@ -201,6 +212,87 @@ router.patch('/:id/archive', verifyHostPin, async (req: Request, res: Response) 
   } catch (error) {
     console.error('Error archiving party:', error);
     res.status(500).json({ error: 'Failed to archive party' });
+  }
+});
+
+/**
+ * GET /api/parties/:id/settlement-summary
+ * Get net winnings per user for a party
+ */
+router.get('/:id/settlement-summary', async (req: Request, res: Response) => {
+  try {
+    const partyId = parseInt(req.params.id);
+
+    if (isNaN(partyId)) {
+      return res.status(400).json({ error: 'Invalid party ID' });
+    }
+
+    const [party] = await db
+      .select()
+      .from(parties)
+      .where(eq(parties.id, partyId));
+
+    if (!party) {
+      return res.status(404).json({ error: 'Party not found' });
+    }
+
+    // Get all bets for this party
+    const partyBets = await db
+      .select()
+      .from(bets)
+      .where(eq(bets.partyId, partyId));
+
+    if (partyBets.length === 0) {
+      return res.json({
+        partyId,
+        partyName: party.name,
+        users: [],
+        totalPot: 0
+      });
+    }
+
+    const betIds = partyBets.map(b => b.id);
+
+    // Get all settlements for bets in this party
+    const partySettlements = await db
+      .select()
+      .from(settlements)
+      .where(inArray(settlements.betId, betIds));
+
+    // Get total pot from wagers
+    const wagerResults = await db
+      .select({ total: sql<number>`COALESCE(SUM(${wagers.amount}), 0)` })
+      .from(wagers)
+      .where(inArray(wagers.betId, betIds));
+
+    const totalPot = wagerResults[0]?.total || 0;
+
+    // Group settlements by user and sum net win/loss
+    const userTotals = partySettlements.reduce((acc, settlement) => {
+      if (!acc[settlement.userName]) {
+        acc[settlement.userName] = 0;
+      }
+      acc[settlement.userName] += settlement.netWinLoss;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Convert to array and sort (winners first, then losers)
+    const users = Object.entries(userTotals)
+      .map(([userName, netAmount]) => ({
+        userName,
+        netAmount
+      }))
+      .sort((a, b) => b.netAmount - a.netAmount);
+
+    res.json({
+      partyId,
+      partyName: party.name,
+      users,
+      totalPot
+    });
+  } catch (error) {
+    console.error('Error fetching settlement summary:', error);
+    res.status(500).json({ error: 'Failed to fetch settlement summary' });
   }
 });
 

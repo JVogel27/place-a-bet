@@ -2,11 +2,18 @@ import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import { createServer } from 'http';
+import { initializeSocketIO } from './websocket/events';
 
 dotenv.config();
 
 const app = express();
+const httpServer = createServer(app);
+const io = initializeSocketIO(httpServer);
 const PORT = process.env.PORT || 3000;
+
+// Export io for use in route handlers
+export { io };
 
 // Middleware
 app.use(cors({
@@ -33,9 +40,12 @@ app.get('/health', (req, res) => {
 // API routes
 import partiesRouter from './routes/parties';
 import betsRouter from './routes/bets';
+import wagersRouter from './routes/wagers';
 
 app.use('/api/parties', partiesRouter);
 app.use('/api/bets', betsRouter);
+app.use('/api/bets', wagersRouter); // Mounts /api/bets/:id/wagers
+app.use('/api', wagersRouter); // Mounts /api/users/:userName/wagers
 
 app.get('/api/test', (req, res) => {
   res.json({ message: 'API is working!' });
@@ -54,8 +64,9 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 
 // Start server only if not in test environment
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
+  httpServer.listen(PORT, () => {
     console.log(`🎲 Place-A-Bet server running on http://localhost:${PORT}`);
+    console.log(`🔌 WebSocket server ready`);
   });
 }
 

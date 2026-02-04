@@ -1,29 +1,321 @@
 .app {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding-bottom: 40px;
 }
 
-.app h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  color: #333;
+.header {
+  background: white;
+  padding: 20px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
-.app p {
-  font-size: 1.2rem;
-  color: #666;
-  margin-bottom: 2rem;
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
-.status {
-  padding: 1rem;
-  background-color: #f0f0f0;
+.title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.hostButton {
+  padding: 8px 16px;
+  background-color: #f3f4f6;
+  border: 2px solid #e5e7eb;
   border-radius: 8px;
-  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.status strong {
-  margin-right: 0.5rem;
+.hostButton:hover {
+  background-color: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+.hostButtonActive {
+  background-color: #fef3c7;
+  border-color: #fbbf24;
+  color: #92400e;
+}
+
+.partyInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.partyName {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.partyStats {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.loading,
+.noParty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  color: white;
+}
+
+.loading p,
+.noParty p {
+  margin: 16px 0 0 0;
+  font-size: 18px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.userSection {
+  max-width: 800px;
+  margin: 0 auto 20px;
+  padding: 0 16px;
+}
+
+.currentUser {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  color: #1a1a1a;
+}
+
+.changeUserButton {
+  padding: 6px 16px;
+  background-color: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.changeUserButton:hover {
+  background-color: #4b5563;
+}
+
+.userPrompt {
+  display: flex;
+  justify-content: center;
+  padding: 12px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.setUserButton {
+  padding: 10px 24px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.setUserButton:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.userInputForm {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.userInput {
+  flex: 1;
+  padding: 10px 16px;
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.userInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.confirmButton {
+  padding: 10px 24px;
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.confirmButton:hover {
+  background-color: #16a34a;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  max-width: 800px;
+  margin: 0 auto 24px;
+  padding: 0 16px;
+  overflow-x: auto;
+}
+
+.tab {
+  flex: 1;
+  min-width: 100px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.tabActive {
+  background: white;
+  color: #667eea;
+  border-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.hostActions {
+  max-width: 800px;
+  margin: 0 auto 20px;
+  padding: 0 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.actionButton {
+  flex: 1;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.actionButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.actionButtonPrimary {
+  background-color: #22c55e;
+  color: white;
+}
+
+.actionButtonPrimary:hover {
+  background-color: #16a34a;
+}
+
+.actionButtonSecondary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.actionButtonSecondary:hover {
+  background-color: #2563eb;
+}
+
+.content {
+  padding-bottom: 20px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .app {
+    padding-bottom: 20px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .partyName {
+    font-size: 18px;
+  }
+
+  .partyStats {
+    font-size: 13px;
+  }
+
+  .tabs {
+    padding: 0 12px;
+  }
+
+  .tab {
+    font-size: 14px;
+    padding: 10px 12px;
+    min-width: 80px;
+  }
+
+  .currentUser {
+    font-size: 15px;
+  }
+
+  .userInputForm {
+    flex-direction: column;
+  }
+
+  .confirmButton,
+  .userInput {
+    width: 100%;
+  }
 }

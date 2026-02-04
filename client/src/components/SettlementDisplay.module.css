@@ -1,0 +1,499 @@
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.header {
+  text-align: center;
+  padding: 24px 0;
+  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.partyName {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.totalPot {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #22c55e;
+}
+
+.loading,
+.error,
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.loading p,
+.error p,
+.empty p {
+  margin: 16px 0 0 0;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.currentUserCard {
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.currentUserWinner {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+}
+
+.currentUserLoser {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+.currentUserBreakEven {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  color: white;
+}
+
+.currentUserLabel {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.currentUserAmount {
+  margin: 0 0 8px 0;
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.currentUserMessage {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.iconWinner,
+.iconLoser,
+.iconBreakEven {
+  font-size: 24px;
+}
+
+.userList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.userRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.userRowWinner {
+  background-color: #f0fdf4;
+  border: 2px solid #bbf7d0;
+}
+
+.userRowLoser {
+  background-color: #fef2f2;
+  border: 2px solid #fecaca;
+}
+
+.userRowBreakEven {
+  background-color: #f9fafb;
+  border: 2px solid #e5e7eb;
+}
+
+.userRowCurrent {
+  border-width: 3px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: #e5e7eb;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.userName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.amount {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.userRowWinner .amount {
+  color: #16a34a;
+}
+
+.userRowLoser .amount {
+  color: #dc2626;
+}
+
+.userRowBreakEven .amount {
+  color: #6b7280;
+}
+
+/* Bet-by-Bet Breakdown Styles */
+.iconBreakdown {
+  font-size: 24px;
+}
+
+.breakdownDescription {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.betBreakdownList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.betBreakdownCard {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.betBreakdownCard:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.betBreakdownHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s;
+}
+
+.betBreakdownHeader:hover {
+  background-color: #f9fafb;
+}
+
+.betBreakdownTitle {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.betQuestion {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.betPool {
+  font-size: 14px;
+  font-weight: 600;
+  color: #22c55e;
+  white-space: nowrap;
+}
+
+.expandIcon {
+  margin-left: 12px;
+  font-size: 14px;
+  color: #6b7280;
+  transition: transform 0.2s;
+}
+
+.betBreakdownContent {
+  padding: 0 20px 20px 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.breakdownSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+}
+
+.summaryLabel {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.summaryValue {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.formulaBox {
+  padding: 16px;
+  background-color: #eff6ff;
+  border: 2px solid #3b82f6;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.formulaTitle {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e40af;
+  text-transform: uppercase;
+}
+
+.formula {
+  margin: 4px 0;
+  font-size: 14px;
+  font-family: 'Monaco', 'Courier New', monospace;
+  color: #1e3a8a;
+}
+
+.userPayouts {
+  margin-top: 16px;
+}
+
+.userPayoutsTitle {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.userPayoutRow {
+  padding: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background-color: #ffffff;
+}
+
+.userPayoutCurrent {
+  border-color: #3b82f6;
+  background-color: #eff6ff;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.userPayoutHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.userPayoutName {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.userPayoutNet {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.userPayoutNetWin {
+  color: #16a34a;
+}
+
+.userPayoutNetLoss {
+  color: #dc2626;
+}
+
+.userPayoutDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.payoutLine {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.payoutLine span:first-child {
+  font-weight: 500;
+}
+
+.payoutLine span:last-child {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.payoutLineTotal {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 12px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .partyName {
+    font-size: 16px;
+  }
+
+  .totalPot {
+    font-size: 20px;
+  }
+
+  .currentUserAmount {
+    font-size: 36px;
+  }
+
+  .userRow {
+    padding: 12px 16px;
+  }
+
+  .userName {
+    font-size: 15px;
+  }
+
+  .amount {
+    font-size: 18px;
+  }
+
+  .betBreakdownTitle {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .betQuestion {
+    font-size: 15px;
+  }
+
+  .betPool {
+    font-size: 13px;
+  }
+
+  .betBreakdownHeader {
+    padding: 14px 16px;
+  }
+
+  .betBreakdownContent {
+    padding: 0 16px 16px 16px;
+  }
+
+  .formulaBox {
+    padding: 12px;
+  }
+
+  .formula {
+    font-size: 13px;
+  }
+
+  .userPayoutRow {
+    padding: 12px;
+  }
+
+  .userPayoutName {
+    font-size: 15px;
+  }
+
+  .userPayoutNet {
+    font-size: 16px;
+  }
+}

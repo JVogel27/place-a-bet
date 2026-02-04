@@ -4,6 +4,8 @@ import { db } from '../db/index';
 import { parties, bets, betOptions, wagers, settlements } from '../db/schema';
 import { createBetSchema, settleBetSchema, closeBetSchema, formatZodError } from '../validation/schemas';
 import { calculatePayouts } from '../utils/payout-calculator';
+import { io } from '../index';
+import { emitBetCreated, emitBetUpdated, emitSettlementComplete } from '../websocket/events';
 
 const router = Router();
 
@@ -232,6 +234,17 @@ router.post('/', async (req: Request, res: Response) => {
       )
       .returning();
 
+    // Emit WebSocket event
+    if (process.env.NODE_ENV !== 'test') {
+      emitBetCreated(io, activeParty.id, {
+        id: newBet.id,
+        partyId: newBet.partyId,
+        title: newBet.question,
+        createdBy: newBet.createdBy,
+        status: newBet.status
+      });
+    }
+
     res.status(201).json({
       ...newBet,
       options: newOptions,
@@ -302,6 +315,15 @@ router.post('/:id/close', async (req: Request, res: Response) => {
       })
       .where(eq(bets.id, betId))
       .returning();
+
+    // Emit WebSocket event
+    if (process.env.NODE_ENV !== 'test') {
+      emitBetUpdated(io, bet.partyId, {
+        id: closedBet.id,
+        partyId: closedBet.partyId,
+        status: closedBet.status
+      });
+    }
 
     // Get options for response
     const options = await db
@@ -427,6 +449,26 @@ router.post('/:id/settle', async (req: Request, res: Response) => {
       })
       .where(eq(bets.id, betId))
       .returning();
+
+    // Emit WebSocket events
+    if (process.env.NODE_ENV !== 'test') {
+      emitBetUpdated(io, bet.partyId, {
+        id: settledBet.id,
+        partyId: settledBet.partyId,
+        status: settledBet.status,
+        settledAt: settledBet.updatedAt
+      });
+
+      emitSettlementComplete(io, bet.partyId, {
+        betId: settledBet.id,
+        partyId: settledBet.partyId,
+        winningOptionId,
+        settlements: payoutResults.map(r => ({
+          userName: r.userName,
+          amount: r.netWinLoss
+        }))
+      });
+    }
 
     // Get options for response
     const options = await db

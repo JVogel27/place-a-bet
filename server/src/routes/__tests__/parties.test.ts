@@ -321,4 +321,233 @@ describe('Parties API', () => {
         .expect(400);
     });
   });
+
+  describe('GET /api/parties/:id/settlement-summary', () => {
+    it('should return settlement summary for party with multiple settled bets', async () => {
+      // Create party
+      const [party] = await db.insert(parties).values({
+        name: 'Super Bowl Party',
+        date: '2026-02-08T00:00:00Z',
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }).returning();
+
+      // Create first bet
+      const [bet1] = await db.insert(bets).values({
+        partyId: party.id,
+        type: 'yes_no',
+        question: 'Overtime?',
+        createdBy: 'Alice',
+        status: 'settled',
+        winningOptionId: 1,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }).returning();
+
+      const [bet1Option1] = await db.insert(betOptions).values({
+        betId: bet1.id,
+        label: 'Yes',
+        createdAt: new Date().toISOString()
+      }).returning();
+
+      const [bet1Option2] = await db.insert(betOptions).values({
+        betId: bet1.id,
+        label: 'No',
+        createdAt: new Date().toISOString()
+      }).returning();
+
+      // Create wagers for bet 1
+      await db.insert(wagers).values([
+        { betId: bet1.id, optionId: bet1Option1.id, userName: 'Alice', amount: 50, createdAt: new Date().toISOString() },
+        { betId: bet1.id, optionId: bet1Option2.id, userName: 'Bob', amount: 30, createdAt: new Date().toISOString() },
+        { betId: bet1.id, optionId: bet1Option1.id, userName: 'Carol', amount: 20, createdAt: new Date().toISOString() }
+      ]);
+
+      // Create settlements for bet 1
+      await db.insert(settlements).values([
+        { betId: bet1.id, userName: 'Alice', totalWagered: 50, payout: 70, netWinLoss: 20, createdAt: new Date().toISOString() },
+        { betId: bet1.id, userName: 'Bob', totalWagered: 30, payout: 0, netWinLoss: -30, createdAt: new Date().toISOString() },
+        { betId: bet1.id, userName: 'Carol', totalWagered: 20, payout: 30, netWinLoss: 10, createdAt: new Date().toISOString() }
+      ]);
+
+      // Create second bet
+      const [bet2] = await db.insert(bets).values({
+        partyId: party.id,
+        type: 'multi_option',
+        question: 'Who wins MVP?',
+        createdBy: 'Bob',
+        status: 'settled',
+        winningOptionId: 2,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }).returning();
+
+      const [bet2Option1] = await db.insert(betOptions).values({
+        betId: bet2.id,
+        label: 'QB',
+        createdAt: new Date().toISOString()
+      }).returning();
+
+      const [bet2Option2] = await db.insert(betOptions).values({
+        betId: bet2.id,
+        label: 'RB',
+        createdAt: new Date().toISOString()
+      }).returning();
+
+      // Create wagers for bet 2
+      await db.insert(wagers).values([
+        { betId: bet2.id, optionId: bet2Option1.id, userName: 'Alice', amount: 40, createdAt: new Date().toISOString() },
+        { betId: bet2.id, optionId: bet2Option2.id, userName: 'Bob', amount: 60, createdAt: new Date().toISOString() }
+      ]);
+
+      // Create settlements for bet 2
+      await db.insert(settlements).values([
+        { betId: bet2.id, userName: 'Alice', totalWagered: 40, payout: 0, netWinLoss: -40, createdAt: new Date().toISOString() },
+        { betId: bet2.id, userName: 'Bob', totalWagered: 60, payout: 100, netWinLoss: 40, createdAt: new Date().toISOString() }
+      ]);
+
+      const response = await request(app)
+        .get(`/api/parties/${party.id}/settlement-summary`)
+        .expect(200);
+
+      expect(response.body.partyId).toBe(party.id);
+      expect(response.body.partyName).toBe('Super Bowl Party');
+      expect(response.body.totalPot).toBe(200); // Sum of all wagers
+      expect(response.body.users).toHaveLength(3);
+
+      // Verify aggregation and sorting
+      // Bob: -30 + 40 = 10
+      // Carol: 10
+      // Alice: 20 + (-40) = -20 (last)
+
+      // First two users should have netAmount of 10 (order not guaranteed when equal)
+      expect(response.body.users[0].netAmount).toBe(10);
+      expect(response.body.users[1].netAmount).toBe(10);
+      expect(['Bob', 'Carol']).toContain(response.body.users[0].userName);
+      expect(['Bob', 'Carol']).toContain(response.body.users[1].userName);
+
+      // Alice should be last with -20
+      expect(response.body.users[2].userName).toBe('Alice');
+      expect(response.body.users[2].netAmount).toBe(-20);
+    });
+
+    it('should return empty summary for party with no settled bets', async () => {
+      const [party] = await db.insert(parties).values({
+        name: 'New Party',
+        date: '2026-03-01T00:00:00Z',
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }).returning();
+
+      const response = await request(app)
+        .get(`/api/parties/${party.id}/settlement-summary`)
+        .expect(200);
+
+      expect(response.body.partyId).toBe(party.id);
+      expect(response.body.partyName).toBe('New Party');
+      expect(response.body.users).toHaveLength(0);
+      expect(response.body.totalPot).toBe(0);
+    });
+
+    it('should handle party with bets but no settlements yet', async () => {
+      const [party] = await db.insert(parties).values({
+        name: 'Game Night',
+        date: '2026-04-01T00:00:00Z',
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }).returning();
+
+      const [bet] = await db.insert(bets).values({
+        partyId: party.id,
+        type: 'yes_no',
+        question: 'Test?',
+        createdBy: 'Alice',
+        status: 'open',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }).returning();
+
+      const [option1] = await db.insert(betOptions).values({
+        betId: bet.id,
+        label: 'Yes',
+        createdAt: new Date().toISOString()
+      }).returning();
+
+      await db.insert(wagers).values({
+        betId: bet.id,
+        optionId: option1.id,
+        userName: 'Alice',
+        amount: 50,
+        createdAt: new Date().toISOString()
+      });
+
+      const response = await request(app)
+        .get(`/api/parties/${party.id}/settlement-summary`)
+        .expect(200);
+
+      expect(response.body.users).toHaveLength(0);
+      expect(response.body.totalPot).toBe(50);
+    });
+
+    it('should return 404 for non-existent party', async () => {
+      const response = await request(app)
+        .get('/api/parties/9999/settlement-summary')
+        .expect(404);
+
+      expect(response.body.error).toBe('Party not found');
+    });
+
+    it('should return 400 for invalid party ID', async () => {
+      const response = await request(app)
+        .get('/api/parties/invalid/settlement-summary')
+        .expect(400);
+
+      expect(response.body.error).toBe('Invalid party ID');
+    });
+
+    it('should correctly sort users with positive amounts first', async () => {
+      const [party] = await db.insert(parties).values({
+        name: 'Test Party',
+        date: '2026-05-01T00:00:00Z',
+        status: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }).returning();
+
+      const [bet] = await db.insert(bets).values({
+        partyId: party.id,
+        type: 'yes_no',
+        question: 'Test?',
+        createdBy: 'Alice',
+        status: 'settled',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }).returning();
+
+      await db.insert(settlements).values([
+        { betId: bet.id, userName: 'Winner1', totalWagered: 50, payout: 100, netWinLoss: 50, createdAt: new Date().toISOString() },
+        { betId: bet.id, userName: 'Loser1', totalWagered: 30, payout: 0, netWinLoss: -30, createdAt: new Date().toISOString() },
+        { betId: bet.id, userName: 'Winner2', totalWagered: 20, payout: 50, netWinLoss: 30, createdAt: new Date().toISOString() },
+        { betId: bet.id, userName: 'Loser2', totalWagered: 40, payout: 0, netWinLoss: -40, createdAt: new Date().toISOString() }
+      ]);
+
+      const response = await request(app)
+        .get(`/api/parties/${party.id}/settlement-summary`)
+        .expect(200);
+
+      expect(response.body.users).toHaveLength(4);
+      // Should be sorted: 50, 30, -30, -40
+      expect(response.body.users[0].userName).toBe('Winner1');
+      expect(response.body.users[0].netAmount).toBe(50);
+      expect(response.body.users[1].userName).toBe('Winner2');
+      expect(response.body.users[1].netAmount).toBe(30);
+      expect(response.body.users[2].userName).toBe('Loser1');
+      expect(response.body.users[2].netAmount).toBe(-30);
+      expect(response.body.users[3].userName).toBe('Loser2');
+      expect(response.body.users[3].netAmount).toBe(-40);
+    });
+  });
 });
