@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { eq, and, sql } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { db } from '../db/index';
 import { parties, bets, betOptions, wagers, settlements } from '../db/schema';
 import { createBetSchema, settleBetSchema, closeBetSchema, formatZodError } from '../validation/schemas';
@@ -8,31 +8,6 @@ import { io } from '../index';
 import { emitBetCreated, emitBetUpdated, emitSettlementComplete } from '../websocket/events';
 
 const router = Router();
-
-/**
- * Middleware to verify host PIN or bet creator
- */
-function verifyHostOrCreator(creatorName?: string) {
-  return (req: Request, res: Response, next: Function) => {
-    const hostPin = req.body.hostPin || req.query.hostPin;
-    const expectedPin = process.env.HOST_PIN;
-
-    // Check if host PIN is valid
-    if (hostPin && hostPin === expectedPin) {
-      return next();
-    }
-
-    // Check if user is the creator
-    if (creatorName && req.body.createdBy === creatorName) {
-      return next();
-    }
-
-    // Neither host nor creator
-    return res.status(403).json({
-      error: 'Unauthorized. Only the host or bet creator can perform this action.'
-    });
-  };
-}
 
 /**
  * GET /api/bets
@@ -158,7 +133,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     const totalPool = betWagers.reduce((sum, w) => sum + w.amount, 0);
 
     // If settled, get settlements
-    let betSettlements = [];
+    let betSettlements: typeof settlements.$inferSelect[] = [];
     if (bet.status === 'settled') {
       betSettlements = await db
         .select()

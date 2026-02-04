@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { eq, and, inArray, sql } from 'drizzle-orm';
+import { eq, and, inArray } from 'drizzle-orm';
 import { db } from '../db/index';
 import { parties, bets, betOptions, wagers } from '../db/schema';
 import { createWagerSchema, formatZodError } from '../validation/schemas';

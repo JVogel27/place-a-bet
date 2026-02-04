@@ -4,6 +4,12 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { createServer } from 'http';
 import { initializeSocketIO } from './websocket/events';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// ES module equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
@@ -33,7 +39,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // Health check
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
@@ -47,17 +53,30 @@ app.use('/api/bets', betsRouter);
 app.use('/api/bets', wagersRouter); // Mounts /api/bets/:id/wagers
 app.use('/api', wagersRouter); // Mounts /api/users/:userName/wagers
 
-app.get('/api/test', (req, res) => {
+app.get('/api/test', (_req, res) => {
   res.json({ message: 'API is working!' });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not found' });
-});
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+  const publicPath = path.join(__dirname, 'public');
+
+  // Serve static assets
+  app.use(express.static(publicPath));
+
+  // Handle client-side routing - send all non-API requests to index.html
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(publicPath, 'index.html'));
+  });
+} else {
+  // 404 handler for development (when API routes don't match)
+  app.use((_req, res) => {
+    res.status(404).json({ error: 'Not found' });
+  });
+}
 
 // Error handler
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });
 });

@@ -2,58 +2,22 @@
  * Audio utility for playing sound effects
  */
 
+// Import the cash register sound
+import cashRegisterSound from '../audio/cash-register.mp3';
+
 /**
- * Play a cash register "ka-ching" sound using Web Audio API
- * This creates a synthesized sound without needing audio files
+ * Play a cash register "ka-ching" sound from audio file
  */
 export function playCashRegisterSound() {
   try {
-    // Create audio context
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const currentTime = audioContext.currentTime;
-
-    // Create oscillators for the "ka-ching" effect
-    const oscillator1 = audioContext.createOscillator();
-    const oscillator2 = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-
-    // Connect nodes
-    oscillator1.connect(gainNode);
-    oscillator2.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    // Configure oscillators for a cash register sound
-    oscillator1.type = 'sine';
-    oscillator2.type = 'sine';
-
-    // Frequencies for a pleasant "cha-ching" sound
-    oscillator1.frequency.setValueAtTime(800, currentTime);
-    oscillator2.frequency.setValueAtTime(1200, currentTime);
-
-    // Envelope for volume (attack-decay-sustain-release)
-    gainNode.gain.setValueAtTime(0, currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.3, currentTime + 0.01); // Attack
-    gainNode.gain.exponentialRampToValueAtTime(0.1, currentTime + 0.1); // Decay
-    gainNode.gain.linearRampToValueAtTime(0.1, currentTime + 0.15); // Sustain
-    gainNode.gain.exponentialRampToValueAtTime(0.01, currentTime + 0.3); // Release
-
-    // Pitch bend for "ching" effect
-    oscillator1.frequency.exponentialRampToValueAtTime(1000, currentTime + 0.05);
-    oscillator2.frequency.exponentialRampToValueAtTime(1400, currentTime + 0.05);
-
-    // Start and stop
-    oscillator1.start(currentTime);
-    oscillator2.start(currentTime);
-    oscillator1.stop(currentTime + 0.3);
-    oscillator2.stop(currentTime + 0.3);
-
-    // Clean up after playing
-    setTimeout(() => {
-      audioContext.close();
-    }, 400);
+    const audio = new Audio(cashRegisterSound);
+    audio.volume = 0.5; // 50% volume to avoid being too loud
+    audio.play().catch(error => {
+      console.warn('Failed to play cash register sound:', error);
+      // Gracefully fail if audio playback is blocked (e.g., autoplay policy)
+    });
   } catch (error) {
-    console.warn('Failed to play cash register sound:', error);
-    // Gracefully fail if Web Audio API is not supported
+    console.warn('Failed to create audio element:', error);
   }
 }
 

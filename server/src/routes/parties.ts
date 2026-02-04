@@ -32,7 +32,7 @@ function verifyHostPin(req: Request, res: Response, next: Function) {
  * GET /api/parties
  * List all parties
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (_req: Request, res: Response) => {
   try {
     const allParties = await db.select().from(parties).orderBy(sql`${parties.createdAt} DESC`);
 
