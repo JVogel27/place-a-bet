@@ -5,33 +5,19 @@ import styles from './WagerForm.module.css';
 
 interface WagerFormProps {
   bet: BetWithDetails;
-  recentUserNames: string[];
+  currentUser: string;
   onSubmit: (data: { userName: string; optionId: number; amount: number }) => Promise<void>;
   onCancel: () => void;
 }
 
-export function WagerForm({ bet, recentUserNames, onSubmit, onCancel }: WagerFormProps) {
-  const [userName, setUserName] = useState('');
+export function WagerForm({ bet, currentUser, onSubmit, onCancel }: WagerFormProps) {
   const [selectedOptionId, setSelectedOptionId] = useState<number | null>(null);
   const [amount, setAmount] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-
-  // Filter recent names based on input
-  const filteredNames = recentUserNames.filter(name =>
-    name.toLowerCase().includes(userName.toLowerCase())
-  );
 
   const validate = (): boolean => {
     const newErrors: { [key: string]: string } = {};
-
-    // Validate user name
-    if (!userName.trim()) {
-      newErrors.userName = 'Please enter your name';
-    } else if (userName.trim().length < 1 || userName.trim().length > 50) {
-      newErrors.userName = 'Name must be between 1 and 50 characters';
-    }
 
     // Validate option selection
     if (selectedOptionId === null) {
@@ -66,7 +52,7 @@ export function WagerForm({ bet, recentUserNames, onSubmit, onCancel }: WagerFor
 
     try {
       await onSubmit({
-        userName: userName.trim(),
+        userName: currentUser,
         optionId: selectedOptionId,
         amount: parseInt(amount, 10)
       });
@@ -75,7 +61,6 @@ export function WagerForm({ bet, recentUserNames, onSubmit, onCancel }: WagerFor
       playCashRegisterSound();
 
       // Reset form on success
-      setUserName('');
       setSelectedOptionId(null);
       setAmount('');
       setErrors({});
@@ -94,11 +79,6 @@ export function WagerForm({ bet, recentUserNames, onSubmit, onCancel }: WagerFor
     setAmount(cleaned);
   };
 
-  const handleNameSelect = (name: string) => {
-    setUserName(name);
-    setShowSuggestions(false);
-  };
-
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
@@ -112,43 +92,10 @@ export function WagerForm({ bet, recentUserNames, onSubmit, onCancel }: WagerFor
         <div className={styles.betInfo}>
           <p className={styles.question}>{bet.question}</p>
           <p className={styles.pool}>Current Pool: ${bet.totalPool.toFixed(0)}</p>
+          <p className={styles.userInfo}>Placing wager as: <strong>{currentUser}</strong></p>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>
-          {/* User Name Input */}
-          <div className={styles.field}>
-            <label htmlFor="userName" className={styles.label}>
-              Your Name
-            </label>
-            <div className={styles.autocompleteWrapper}>
-              <input
-                type="text"
-                id="userName"
-                value={userName}
-                onChange={e => setUserName(e.target.value)}
-                onFocus={() => setShowSuggestions(true)}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                className={styles.input}
-                placeholder="Enter your name"
-                autoComplete="off"
-              />
-              {showSuggestions && filteredNames.length > 0 && userName.length > 0 && (
-                <ul className={styles.suggestions}>
-                  {filteredNames.slice(0, 5).map((name, index) => (
-                    <li
-                      key={index}
-                      className={styles.suggestion}
-                      onMouseDown={() => handleNameSelect(name)}
-                    >
-                      {name}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            {errors.userName && <span className={styles.error}>{errors.userName}</span>}
-          </div>
-
           {/* Option Selection */}
           <div className={styles.field}>
             <label className={styles.label}>Select Your Prediction</label>

@@ -259,7 +259,6 @@ function App() {
             partyId={activeParty.id}
             status="open"
             currentUser={currentUser}
-            recentUserNames={recentUserNames}
             onUserWagerPlaced={handleUserWagerPlaced}
             showHostActions={isHostMode}
           />
@@ -270,7 +269,6 @@ function App() {
             partyId={activeParty.id}
             status="closed"
             currentUser={currentUser}
-            recentUserNames={recentUserNames}
             onUserWagerPlaced={handleUserWagerPlaced}
             showHostActions={isHostMode}
           />
@@ -281,7 +279,6 @@ function App() {
             partyId={activeParty.id}
             status="settled"
             currentUser={currentUser}
-            recentUserNames={recentUserNames}
             onUserWagerPlaced={handleUserWagerPlaced}
             showHostActions={isHostMode}
           />

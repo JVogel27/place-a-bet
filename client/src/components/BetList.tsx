@@ -11,7 +11,6 @@ interface BetListProps {
   partyId: number | null;
   status?: 'open' | 'closed' | 'settled';
   currentUser: string | null;
-  recentUserNames: string[];
   showHostActions?: boolean;
   onUserWagerPlaced?: (userName: string) => void;
 }
@@ -20,7 +19,6 @@ export function BetList({
   partyId,
   status,
   currentUser,
-  recentUserNames,
   showHostActions = false,
   onUserWagerPlaced
 }: BetListProps) {
@@ -209,10 +207,10 @@ export function BetList({
         ))}
       </div>
 
-      {showWagerForm && selectedBet && (
+      {showWagerForm && selectedBet && currentUser && (
         <WagerForm
           bet={selectedBet}
-          recentUserNames={recentUserNames}
+          currentUser={currentUser}
           onSubmit={handleWagerSubmit}
           onCancel={handleCloseForm}
         />
