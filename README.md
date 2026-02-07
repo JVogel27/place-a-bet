@@ -56,8 +56,8 @@ npm run dev
 ```
 
 This starts:
-- Backend server on http://localhost:3000
-- Frontend dev server on http://localhost:5173
+- Backend server on http://localhost:3001
+- Frontend dev server on http://localhost:6767
 
 ### Start Individually
 
@@ -186,8 +186,9 @@ If you encounter build errors with `better-sqlite3`:
 
 ### Port Already in Use
 
-If port 3000 or 5173 is already in use:
-- Change `PORT` in `.env`
+If port 3001 or 6767 is already in use:
+- Change `PORT` in `.env` (for backend)
+- Change port in `client/vite.config.ts` (for frontend)
 - Or kill the process using the port
 
 ## Tech Stack

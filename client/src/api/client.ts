@@ -13,7 +13,7 @@ import type {
   Wager
 } from './types';
 
-const API_BASE = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001';
 
 /**
  * Base fetch wrapper with error handling

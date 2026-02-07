@@ -247,7 +247,7 @@ When bet is settled, show:
   - Auto-start on Pi boot
   - Easy log management (`pm2 logs`)
 - **Access:** Local network only (192.168.1.x)
-- **Port:** 3000 (configurable via .env)
+- **Port:** 3001 (configurable via .env)
 
 ### Development
 - **Monorepo Structure:**

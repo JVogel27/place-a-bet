@@ -93,7 +93,7 @@ export function useSocket(options: UseSocketOptions = {}) {
     if (!autoConnect) return;
 
     // Get server URL from environment or default to same host
-    const serverUrl = import.meta.env.VITE_SERVER_URL || `http://localhost:3000`;
+    const serverUrl = import.meta.env.VITE_SERVER_URL || `http://localhost:3001`;
 
     // Create socket connection
     const socket = io(serverUrl, {

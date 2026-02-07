@@ -113,7 +113,7 @@ nano .env
 ```env
 # Server Configuration
 NODE_ENV=production
-PORT=3000
+PORT=3001
 
 # Host Authentication
 HOST_PIN=1234  # Change this to your desired 4-digit PIN
@@ -211,10 +211,10 @@ hostname -I
 ### 8.2 Access from Browser
 On any device connected to the same network:
 ```
-http://<pi-ip-address>:3000
+http://<pi-ip-address>:3001
 ```
 
-Example: `http://192.168.1.100:3000`
+Example: `http://192.168.1.100:3001`
 
 ### 8.3 Test the Application
 1. Open the URL in your browser
@@ -229,12 +229,12 @@ Example: `http://192.168.1.100:3000`
 
 ## Step 9: Optional - Use Port 80 (No Port Number in URL)
 
-If you want to access the app as `http://<pi-ip>` instead of `http://<pi-ip>:3000`:
+If you want to access the app as `http://<pi-ip>` instead of `http://<pi-ip>:3001`:
 
 ### Option A: Port Forwarding with iptables
 ```bash
-# Redirect port 80 to 3000
-sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
+# Redirect port 80 to 3001
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3001
 
 # Make it persistent across reboots
 sudo apt install iptables-persistent
@@ -320,8 +320,8 @@ pm2 restart place-a-bet
 # Check PM2 logs
 pm2 logs place-a-bet
 
-# Check if port 3000 is already in use
-sudo lsof -i :3000
+# Check if port 3001 is already in use
+sudo lsof -i :3001
 
 # Verify Node.js version
 node --version  # Should be v20.x.x
@@ -339,13 +339,13 @@ pm2 status
 
 # Check firewall (if enabled)
 sudo ufw status
-sudo ufw allow 3000
+sudo ufw allow 3001
 
 # Verify Pi's IP address
 hostname -I
 
 # Test from Pi itself
-curl http://localhost:3000/health
+curl http://localhost:3001/health
 # Should return: {"status":"ok","timestamp":"..."}
 ```
 
@@ -462,7 +462,7 @@ crontab -e
 
 Before your first party, test these features:
 
-- [ ] App loads on Pi (`http://<pi-ip>:3000`)
+- [ ] App loads on Pi (`http://<pi-ip>:3001`)
 - [ ] App loads on mobile devices on same network
 - [ ] Enter host mode with PIN
 - [ ] Create a new party
@@ -491,7 +491,7 @@ journalctl -u pm2-pi
 ```
 
 ### Common Issues
-1. **Port 3000 in use**: Change `PORT` in `.env` to 3001
+1. **Port 3001 in use**: Change `PORT` in `.env` to 3002
 2. **Database locked**: Make sure only one instance is running (`pm2 status`)
 3. **Build files missing**: Re-run `npm run build:prod`
 4. **Node version wrong**: Run `nvm use 20`
@@ -509,7 +509,7 @@ journalctl -u pm2-pi
 6. ✅ Build production bundle (`npm run build:prod`)
 7. ✅ Start with PM2 (`pm2 start npm --name "place-a-bet" -- run start:prod`)
 8. ✅ Configure auto-start (`pm2 startup` + `pm2 save`)
-9. ✅ Access from network (`http://<pi-ip>:3000`)
+9. ✅ Access from network (`http://<pi-ip>:3001`)
 
 **The app is now running and ready for your party!** 🎲
 

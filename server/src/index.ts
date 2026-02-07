@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 const httpServer = createServer(app);
 const io = initializeSocketIO(httpServer);
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Export io for use in route handlers
 export { io };
