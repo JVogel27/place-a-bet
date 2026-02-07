@@ -4,16 +4,46 @@
   box-sizing: border-box;
 }
 
+:root {
+  /* Windows 95 Color Palette */
+  --win95-gray: #c0c0c0;
+  --win95-dark-gray: #808080;
+  --win95-light-gray: #dfdfdf;
+  --win95-white: #ffffff;
+  --win95-black: #000000;
+  --win95-blue: #000080;
+  --win95-light-blue: #0000ff;
+  --win95-desktop: #008080;
+  --win95-highlight: #000080;
+  --win95-highlight-text: #ffffff;
+  --win95-button-face: #c0c0c0;
+  --win95-button-shadow: #808080;
+  --win95-button-dark-shadow: #000000;
+  --win95-button-light: #dfdfdf;
+  --win95-button-highlight: #ffffff;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f5f5f5;
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: none;
+  font-smooth: never;
+  background-color: var(--win95-desktop);
+  color: var(--win95-black);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Windows 95 Button Styles */
+button {
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif;
+  font-size: 11px;
+}
+
+/* Windows 95 Input Styles */
+input, textarea, select {
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif;
+  font-size: 11px;
 }

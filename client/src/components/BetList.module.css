@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 8px;
 }
 
 .list {
@@ -17,24 +17,30 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   text-align: center;
+  background: var(--win95-gray);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  margin: 8px 0;
 }
 
 .loading p,
 .error p,
 .empty p {
-  margin: 16px 0 0 0;
-  font-size: 16px;
-  color: #6b7280;
+  margin: 12px 0 0 0;
+  font-size: 11px;
+  color: var(--win95-black);
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #e5e7eb;
-  border-top-color: #3b82f6;
-  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--win95-button-shadow);
+  border-top-color: var(--win95-black);
+  border-radius: 0;
   animation: spin 0.8s linear infinite;
 }
 
@@ -45,31 +51,32 @@
 }
 
 .retryButton {
-  margin-top: 16px;
-  padding: 12px 24px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
+  margin-top: 12px;
+  padding: 2px 12px;
+  background-color: var(--win95-button-face);
+  color: var(--win95-black);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  font-size: 11px;
+  font-weight: normal;
   cursor: pointer;
-  transition: all 0.2s;
-}
-
-.retryButton:hover {
-  background-color: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  min-width: 75px;
+  height: 23px;
 }
 
 .retryButton:active {
-  transform: translateY(0);
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  padding: 3px 11px 1px 13px;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
   .container {
-    padding: 0 12px;
+    padding: 0 4px;
   }
 }

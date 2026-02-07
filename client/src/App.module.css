@@ -1,51 +1,68 @@
 .app {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--win95-desktop);
+  padding: 8px;
   padding-bottom: 40px;
 }
 
 .header {
-  background: white;
-  padding: 20px 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  background: var(--win95-gray);
+  padding: 3px;
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  margin-bottom: 8px;
 }
 
 .headerTop {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+  padding: 2px 4px;
+  background: var(--win95-blue);
+  color: var(--win95-white);
 }
 
 .title {
   margin: 0;
-  font-size: 32px;
-  font-weight: 800;
-  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--win95-white);
+  letter-spacing: 0.5px;
 }
 
 .hostButton {
-  padding: 8px 16px;
-  background-color: #f3f4f6;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #6b7280;
+  padding: 2px 12px;
+  background-color: var(--win95-button-face);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  font-size: 11px;
+  font-weight: normal;
+  color: var(--win95-black);
   cursor: pointer;
-  transition: all 0.2s;
+  min-width: 75px;
+  height: 23px;
 }
 
-.hostButton:hover {
-  background-color: #e5e7eb;
-  border-color: #d1d5db;
+.hostButton:active {
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  padding: 3px 11px 1px 13px;
 }
 
 .hostButtonActive {
-  background-color: #fef3c7;
-  border-color: #fbbf24;
-  color: #92400e;
+  background-color: var(--win95-button-face);
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  color: var(--win95-black);
 }
 
 .partyInfo {
@@ -53,17 +70,19 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  padding: 8px;
+  background: var(--win95-gray);
 }
 
 .partyName {
-  font-size: 20px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--win95-black);
 }
 
 .partyStats {
-  font-size: 14px;
-  color: #6b7280;
+  font-size: 11px;
+  color: var(--win95-black);
 }
 
 .loading,
@@ -74,21 +93,28 @@
   justify-content: center;
   min-height: 60vh;
   text-align: center;
-  color: white;
+  padding: 20px;
+  background: var(--win95-gray);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  margin: 8px;
 }
 
 .loading p,
 .noParty p {
   margin: 16px 0 0 0;
-  font-size: 18px;
+  font-size: 11px;
+  color: var(--win95-black);
 }
 
 .spinner {
   width: 50px;
   height: 50px;
-  border: 5px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
-  border-radius: 50%;
+  border: 3px solid var(--win95-button-shadow);
+  border-top-color: var(--win95-black);
+  border-radius: 0;
   animation: spin 0.8s linear infinite;
 }
 
@@ -100,178 +126,209 @@
 
 .userSection {
   max-width: 800px;
-  margin: 0 auto 20px;
-  padding: 0 16px;
+  margin: 0 auto 8px;
+  padding: 0 8px;
 }
 
 .currentUser {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-size: 16px;
-  color: #1a1a1a;
+  padding: 8px 12px;
+  background: var(--win95-gray);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  font-size: 11px;
+  color: var(--win95-black);
 }
 
 .changeUserButton {
-  padding: 6px 16px;
-  background-color: #6b7280;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
+  padding: 2px 12px;
+  background-color: var(--win95-button-face);
+  color: var(--win95-black);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  font-size: 11px;
+  font-weight: normal;
   cursor: pointer;
-  transition: all 0.2s;
+  min-width: 75px;
+  height: 23px;
 }
 
-.changeUserButton:hover {
-  background-color: #4b5563;
+.changeUserButton:active {
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  padding: 3px 11px 1px 13px;
 }
 
 .userPrompt {
   display: flex;
   justify-content: center;
-  padding: 12px 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 8px 12px;
+  background: var(--win95-gray);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
 }
 
 .setUserButton {
-  padding: 10px 24px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
+  padding: 2px 12px;
+  background-color: var(--win95-button-face);
+  color: var(--win95-black);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  font-size: 11px;
+  font-weight: normal;
   cursor: pointer;
-  transition: all 0.2s;
+  min-width: 75px;
+  height: 23px;
 }
 
-.setUserButton:hover {
-  background-color: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+.setUserButton:active {
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  padding: 3px 11px 1px 13px;
 }
 
 .userInputForm {
   display: flex;
-  gap: 8px;
+  gap: 4px;
   width: 100%;
   max-width: 400px;
 }
 
 .userInput {
   flex: 1;
-  padding: 10px 16px;
-  border: 2px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 16px;
-  transition: border-color 0.2s;
+  padding: 3px 4px;
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  background: var(--win95-white);
+  font-size: 11px;
 }
 
 .userInput:focus {
   outline: none;
-  border-color: #3b82f6;
 }
 
 .confirmButton {
-  padding: 10px 24px;
-  background-color: #22c55e;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
+  padding: 2px 12px;
+  background-color: var(--win95-button-face);
+  color: var(--win95-black);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  font-size: 11px;
+  font-weight: normal;
   cursor: pointer;
-  transition: all 0.2s;
+  min-width: 75px;
+  height: 23px;
 }
 
-.confirmButton:hover {
-  background-color: #16a34a;
+.confirmButton:active {
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  padding: 3px 11px 1px 13px;
 }
 
 .tabs {
   display: flex;
-  gap: 8px;
+  gap: 0;
   max-width: 800px;
-  margin: 0 auto 24px;
-  padding: 0 16px;
+  margin: 0 auto 8px;
+  padding: 0 8px;
   overflow-x: auto;
 }
 
 .tab {
   flex: 1;
-  min-width: 100px;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
+  min-width: 80px;
+  padding: 3px 8px;
+  background: var(--win95-button-face);
+  color: var(--win95-black);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  font-size: 11px;
+  font-weight: normal;
   cursor: pointer;
-  transition: all 0.2s;
   white-space: nowrap;
+  margin-right: 2px;
 }
 
-.tab:hover {
-  background: rgba(255, 255, 255, 0.3);
+.tab:active {
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  padding: 4px 7px 2px 9px;
 }
 
 .tabActive {
-  background: white;
-  color: #667eea;
-  border-color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: var(--win95-button-face);
+  color: var(--win95-black);
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  font-weight: bold;
 }
 
 .hostActions {
   max-width: 800px;
-  margin: 0 auto 20px;
-  padding: 0 16px;
+  margin: 0 auto 8px;
+  padding: 0 8px;
   display: flex;
-  gap: 12px;
+  gap: 4px;
 }
 
 .actionButton {
   flex: 1;
-  padding: 14px 24px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
+  padding: 2px 12px;
+  background-color: var(--win95-button-face);
+  color: var(--win95-black);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  font-size: 11px;
+  font-weight: normal;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  min-height: 23px;
 }
 
-.actionButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+.actionButton:active {
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  padding: 3px 11px 1px 13px;
 }
 
 .actionButtonPrimary {
-  background-color: #22c55e;
-  color: white;
-}
-
-.actionButtonPrimary:hover {
-  background-color: #16a34a;
+  background-color: var(--win95-button-face);
+  color: var(--win95-black);
 }
 
 .actionButtonSecondary {
-  background-color: #3b82f6;
-  color: white;
-}
-
-.actionButtonSecondary:hover {
-  background-color: #2563eb;
+  background-color: var(--win95-button-face);
+  color: var(--win95-black);
 }
 
 .content {
@@ -281,33 +338,34 @@
 /* Mobile responsive */
 @media (max-width: 768px) {
   .app {
+    padding: 4px;
     padding-bottom: 20px;
   }
 
   .title {
-    font-size: 28px;
+    font-size: 11px;
   }
 
   .partyName {
-    font-size: 18px;
+    font-size: 11px;
   }
 
   .partyStats {
-    font-size: 13px;
+    font-size: 10px;
   }
 
   .tabs {
-    padding: 0 12px;
+    padding: 0 4px;
   }
 
   .tab {
-    font-size: 14px;
-    padding: 10px 12px;
-    min-width: 80px;
+    font-size: 10px;
+    padding: 2px 6px;
+    min-width: 60px;
   }
 
   .currentUser {
-    font-size: 15px;
+    font-size: 10px;
   }
 
   .userInputForm {

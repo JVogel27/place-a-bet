@@ -1,60 +1,68 @@
 .card {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 16px;
+  background: var(--win95-gray);
+  padding: 3px;
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  margin-bottom: 8px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 12px;
-  gap: 12px;
+  margin-bottom: 8px;
+  gap: 8px;
+  padding: 4px 6px;
+  background: var(--win95-blue);
+  color: var(--win95-white);
 }
 
 .question {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--win95-white);
   flex: 1;
 }
 
 .badge {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 1px 6px;
+  font-size: 9px;
+  font-weight: bold;
   text-transform: uppercase;
   white-space: nowrap;
+  border: 1px solid var(--win95-black);
+  background: var(--win95-gray);
+  color: var(--win95-black);
 }
 
 .badgeOpen {
-  background-color: #22c55e;
-  color: white;
+  background-color: #00ff00;
+  color: var(--win95-black);
 }
 
 .badgeClosed {
-  background-color: #f59e0b;
-  color: white;
+  background-color: #ffff00;
+  color: var(--win95-black);
 }
 
 .badgeSettled {
-  background-color: #6366f1;
-  color: white;
+  background-color: #ff00ff;
+  color: var(--win95-black);
 }
 
 .meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e5e7eb;
-  font-size: 14px;
-  color: #6b7280;
+  margin-bottom: 8px;
+  padding: 6px;
+  border-bottom: 2px groove var(--win95-button-shadow);
+  font-size: 11px;
+  color: var(--win95-black);
+  background: var(--win95-gray);
 }
 
 .creator {
@@ -62,167 +70,176 @@
 }
 
 .pool {
-  font-weight: 600;
-  color: #1a1a1a;
-  font-size: 16px;
+  font-weight: bold;
+  color: var(--win95-black);
+  font-size: 11px;
 }
 
 .winner {
-  background-color: #fef3c7;
-  border: 2px solid #f59e0b;
-  border-radius: 6px;
-  padding: 12px;
-  margin-bottom: 16px;
-  font-size: 16px;
+  background-color: #ffff00;
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  padding: 8px;
+  margin: 0 6px 8px 6px;
+  font-size: 11px;
+  font-weight: bold;
   text-align: center;
 }
 
 .options {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin: 0 6px 8px 6px;
 }
 
 .option {
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 12px;
-  transition: border-color 0.2s;
-}
-
-.option:hover {
-  border-color: #d1d5db;
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  padding: 6px;
+  background: var(--win95-gray);
 }
 
 .optionWinner {
-  background-color: #fef3c7;
-  border-color: #f59e0b;
-  border-width: 2px;
+  background-color: #ffff00;
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
 }
 
 .optionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .optionLabel {
-  font-weight: 600;
-  font-size: 15px;
-  color: #1a1a1a;
+  font-weight: bold;
+  font-size: 11px;
+  color: var(--win95-black);
 }
 
 .optionTotal {
-  font-weight: 700;
-  font-size: 16px;
-  color: #22c55e;
+  font-weight: bold;
+  font-size: 11px;
+  color: #008000;
 }
 
 .wagerList {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid #f3f4f6;
+  gap: 2px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--win95-button-shadow);
 }
 
 .wager {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 8px;
-  font-size: 14px;
-  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 11px;
 }
 
 .wagerCurrentUser {
-  background-color: #dbeafe;
-  font-weight: 600;
+  background-color: var(--win95-highlight);
+  color: var(--win95-highlight-text);
+  font-weight: bold;
+}
+
+.wagerCurrentUser .wagerUser {
+  color: var(--win95-highlight-text);
+}
+
+.wagerCurrentUser .wagerAmount {
+  color: var(--win95-highlight-text);
+  font-weight: bold;
 }
 
 .wagerUser {
-  color: #4b5563;
+  color: var(--win95-black);
 }
 
 .wagerAmount {
-  color: #1a1a1a;
-  font-weight: 500;
+  color: var(--win95-black);
+  font-weight: bold;
 }
 
 .userSummary {
-  background-color: #dbeafe;
-  border-radius: 6px;
-  padding: 12px;
-  margin-bottom: 16px;
-  font-size: 14px;
+  background-color: var(--win95-highlight);
+  color: var(--win95-highlight-text);
+  padding: 8px;
+  margin: 0 6px 8px 6px;
+  font-size: 11px;
   text-align: center;
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
 }
 
 .actions {
   display: flex;
-  gap: 12px;
+  gap: 4px;
   flex-wrap: wrap;
+  margin: 0 6px 6px 6px;
 }
 
 .button {
   flex: 1;
-  min-width: 120px;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
+  min-width: 75px;
+  padding: 2px 12px;
+  background-color: var(--win95-button-face);
+  color: var(--win95-black);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  font-size: 11px;
+  font-weight: normal;
   cursor: pointer;
-  transition: all 0.2s;
-}
-
-.button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  height: 23px;
 }
 
 .button:active {
-  transform: translateY(0);
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  padding: 3px 11px 1px 13px;
 }
 
 .buttonPrimary {
-  background-color: #3b82f6;
-  color: white;
-}
-
-.buttonPrimary:hover {
-  background-color: #2563eb;
+  background-color: var(--win95-button-face);
+  color: var(--win95-black);
 }
 
 .buttonSecondary {
-  background-color: #6b7280;
-  color: white;
-}
-
-.buttonSecondary:hover {
-  background-color: #4b5563;
+  background-color: var(--win95-button-face);
+  color: var(--win95-black);
 }
 
 .buttonSuccess {
-  background-color: #22c55e;
-  color: white;
-}
-
-.buttonSuccess:hover {
-  background-color: #16a34a;
+  background-color: var(--win95-button-face);
+  color: var(--win95-black);
+  font-weight: bold;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
   .card {
-    padding: 16px;
+    padding: 2px;
   }
 
   .question {
-    font-size: 16px;
+    font-size: 10px;
   }
 
   .actions {

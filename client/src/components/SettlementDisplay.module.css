@@ -2,34 +2,38 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 8px;
 }
 
 .header {
   text-align: center;
-  padding: 24px 0;
-  border-bottom: 2px solid #e5e7eb;
-  margin-bottom: 24px;
+  padding: 16px 0;
+  margin-bottom: 16px;
+  background: var(--win95-gray);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
 }
 
 .title {
-  margin: 0 0 8px 0;
-  font-size: 28px;
-  font-weight: 700;
-  color: #1a1a1a;
+  margin: 0 0 4px 0;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--win95-black);
 }
 
 .partyName {
-  margin: 0 0 12px 0;
-  font-size: 18px;
-  color: #6b7280;
+  margin: 0 0 8px 0;
+  font-size: 11px;
+  color: var(--win95-black);
 }
 
 .totalPot {
   margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-  color: #22c55e;
+  font-size: 16px;
+  font-weight: bold;
+  color: #008000;
 }
 
 .loading,
@@ -39,24 +43,30 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 40px 20px;
   text-align: center;
+  background: var(--win95-gray);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  margin: 8px 0;
 }
 
 .loading p,
 .error p,
 .empty p {
-  margin: 16px 0 0 0;
-  font-size: 16px;
-  color: #6b7280;
+  margin: 12px 0 0 0;
+  font-size: 11px;
+  color: var(--win95-black);
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #e5e7eb;
-  border-top-color: #3b82f6;
-  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--win95-button-shadow);
+  border-top-color: var(--win95-black);
+  border-radius: 0;
   animation: spin 0.8s linear infinite;
 }
 
@@ -67,174 +77,162 @@
 }
 
 .currentUserCard {
-  padding: 24px;
-  border-radius: 12px;
-  margin-bottom: 32px;
+  padding: 16px;
+  margin-bottom: 16px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
 }
 
 .currentUserWinner {
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  color: white;
+  background: #00ff00;
+  color: var(--win95-black);
 }
 
 .currentUserLoser {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
+  background: #ff0000;
+  color: var(--win95-white);
 }
 
 .currentUserBreakEven {
-  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-  color: white;
+  background: var(--win95-gray);
+  color: var(--win95-black);
 }
 
 .currentUserLabel {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-  font-weight: 600;
+  margin: 0 0 4px 0;
+  font-size: 10px;
+  font-weight: bold;
   text-transform: uppercase;
-  opacity: 0.9;
 }
 
 .currentUserAmount {
-  margin: 0 0 8px 0;
-  font-size: 42px;
-  font-weight: 700;
+  margin: 0 0 4px 0;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .currentUserMessage {
   margin: 0;
-  font-size: 16px;
-  opacity: 0.9;
+  font-size: 11px;
 }
 
 .section {
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 
 .sectionTitle {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 0 0 16px 0;
-  font-size: 20px;
-  font-weight: 700;
-  color: #1a1a1a;
+  gap: 6px;
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--win95-black);
+  padding: 4px 6px;
+  background: var(--win95-gray);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
 }
 
 .iconWinner,
 .iconLoser,
-.iconBreakEven {
-  font-size: 24px;
+.iconBreakEven,
+.iconBreakdown {
+  font-size: 13px;
 }
 
 .userList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .userRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
-  border-radius: 8px;
-  transition: all 0.2s;
+  padding: 8px 10px;
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
 }
 
 .userRowWinner {
-  background-color: #f0fdf4;
-  border: 2px solid #bbf7d0;
+  background-color: #00ff00;
+  color: var(--win95-black);
 }
 
 .userRowLoser {
-  background-color: #fef2f2;
-  border: 2px solid #fecaca;
+  background-color: #ff0000;
+  color: var(--win95-white);
 }
 
 .userRowBreakEven {
-  background-color: #f9fafb;
-  border: 2px solid #e5e7eb;
+  background-color: var(--win95-gray);
+  color: var(--win95-black);
 }
 
 .userRowCurrent {
   border-width: 3px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
 }
 
 .userInfo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .rank {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  background-color: #e5e7eb;
-  border-radius: 50%;
-  font-size: 14px;
-  font-weight: 700;
-  color: #1a1a1a;
+  width: 20px;
+  height: 20px;
+  background-color: var(--win95-button-face);
+  border: 1px solid var(--win95-black);
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--win95-black);
 }
 
 .userName {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-size: 11px;
+  font-weight: bold;
 }
 
 .amount {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.userRowWinner .amount {
-  color: #16a34a;
-}
-
-.userRowLoser .amount {
-  color: #dc2626;
-}
-
-.userRowBreakEven .amount {
-  color: #6b7280;
-}
-
-/* Bet-by-Bet Breakdown Styles */
-.iconBreakdown {
-  font-size: 24px;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 .breakdownDescription {
-  margin: 0 0 16px 0;
-  font-size: 14px;
-  color: #6b7280;
+  margin: 0 0 8px 0;
+  font-size: 10px;
+  color: var(--win95-black);
   font-style: italic;
+  padding: 4px 6px;
 }
 
 .betBreakdownList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .betBreakdownCard {
-  background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
+  background: var(--win95-gray);
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
   overflow: hidden;
-  transition: all 0.2s;
-}
-
-.betBreakdownCard:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
 .betBreakdownHeader {
@@ -242,16 +240,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
-  background: none;
+  padding: 8px 10px;
+  background: var(--win95-gray);
   border: none;
   cursor: pointer;
   text-align: left;
-  transition: background-color 0.2s;
 }
 
-.betBreakdownHeader:hover {
-  background-color: #f9fafb;
+.betBreakdownHeader:active {
+  background-color: var(--win95-button-shadow);
 }
 
 .betBreakdownTitle {
@@ -259,241 +256,246 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .betQuestion {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--win95-black);
 }
 
 .betPool {
-  font-size: 14px;
-  font-weight: 600;
-  color: #22c55e;
+  font-size: 10px;
+  font-weight: bold;
+  color: #008000;
   white-space: nowrap;
 }
 
 .expandIcon {
-  margin-left: 12px;
-  font-size: 14px;
-  color: #6b7280;
-  transition: transform 0.2s;
+  margin-left: 8px;
+  font-size: 10px;
+  color: var(--win95-black);
 }
 
 .betBreakdownContent {
-  padding: 0 20px 20px 20px;
-  border-top: 1px solid #e5e7eb;
+  padding: 0 10px 10px 10px;
+  border-top: 1px solid var(--win95-button-shadow);
 }
 
 .breakdownSummary {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-  background-color: #f9fafb;
-  border-radius: 8px;
-  margin-bottom: 16px;
+  gap: 6px;
+  padding: 8px;
+  background-color: var(--win95-white);
+  border-top: 2px solid var(--win95-button-dark-shadow);
+  border-left: 2px solid var(--win95-button-dark-shadow);
+  border-right: 2px solid var(--win95-button-highlight);
+  border-bottom: 2px solid var(--win95-button-highlight);
+  margin-bottom: 8px;
 }
 
 .summaryItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 15px;
+  font-size: 10px;
 }
 
 .summaryLabel {
-  font-weight: 600;
-  color: #6b7280;
+  font-weight: bold;
+  color: var(--win95-black);
 }
 
 .summaryValue {
-  font-weight: 700;
-  color: #1a1a1a;
+  font-weight: bold;
+  color: var(--win95-black);
 }
 
 .formulaBox {
-  padding: 16px;
-  background-color: #eff6ff;
-  border: 2px solid #3b82f6;
-  border-radius: 8px;
-  margin-bottom: 16px;
+  padding: 8px;
+  background-color: var(--win95-white);
+  border: 2px solid var(--win95-black);
+  margin-bottom: 8px;
 }
 
 .formulaTitle {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-  font-weight: 700;
-  color: #1e40af;
+  margin: 0 0 4px 0;
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--win95-black);
   text-transform: uppercase;
 }
 
 .formula {
-  margin: 4px 0;
-  font-size: 14px;
-  font-family: 'Monaco', 'Courier New', monospace;
-  color: #1e3a8a;
+  margin: 2px 0;
+  font-size: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--win95-black);
 }
 
 .userPayouts {
-  margin-top: 16px;
+  margin-top: 8px;
 }
 
 .userPayoutsTitle {
-  margin: 0 0 12px 0;
-  font-size: 16px;
-  font-weight: 700;
-  color: #1a1a1a;
+  margin: 0 0 6px 0;
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--win95-black);
 }
 
 .userPayoutRow {
-  padding: 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  background-color: #ffffff;
+  padding: 8px;
+  border-top: 2px solid var(--win95-button-highlight);
+  border-left: 2px solid var(--win95-button-highlight);
+  border-right: 2px solid var(--win95-button-dark-shadow);
+  border-bottom: 2px solid var(--win95-button-dark-shadow);
+  margin-bottom: 6px;
+  background-color: var(--win95-gray);
 }
 
 .userPayoutCurrent {
-  border-color: #3b82f6;
-  background-color: #eff6ff;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+  border-color: var(--win95-black);
+  border-width: 3px;
+  background-color: var(--win95-highlight);
+  color: var(--win95-highlight-text);
 }
 
 .userPayoutHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--win95-button-shadow);
 }
 
 .userPayoutName {
-  font-size: 16px;
-  font-weight: 700;
-  color: #1a1a1a;
+  font-size: 11px;
+  font-weight: bold;
 }
 
 .userPayoutNet {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 .userPayoutNetWin {
-  color: #16a34a;
+  color: #008000;
 }
 
 .userPayoutNetLoss {
-  color: #dc2626;
+  color: #ff0000;
+}
+
+.userPayoutCurrent .userPayoutNetWin,
+.userPayoutCurrent .userPayoutNetLoss {
+  color: inherit;
 }
 
 .userPayoutDetails {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .payoutLine {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
-  color: #6b7280;
+  font-size: 10px;
 }
 
 .payoutLine span:first-child {
-  font-weight: 500;
+  font-weight: normal;
 }
 
 .payoutLine span:last-child {
-  font-weight: 600;
-  color: #1a1a1a;
+  font-weight: bold;
 }
 
 .payoutLineTotal {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid #e5e7eb;
-  font-size: 15px;
-  font-weight: 700;
-  color: #1a1a1a;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--win95-button-shadow);
+  font-size: 10px;
+  font-weight: bold;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
   .container {
-    padding: 0 12px;
+    padding: 0 4px;
   }
 
   .title {
-    font-size: 24px;
+    font-size: 11px;
   }
 
   .partyName {
-    font-size: 16px;
+    font-size: 10px;
   }
 
   .totalPot {
-    font-size: 20px;
+    font-size: 14px;
   }
 
   .currentUserAmount {
-    font-size: 36px;
+    font-size: 24px;
   }
 
   .userRow {
-    padding: 12px 16px;
+    padding: 6px 8px;
   }
 
   .userName {
-    font-size: 15px;
+    font-size: 10px;
   }
 
   .amount {
-    font-size: 18px;
+    font-size: 11px;
   }
 
   .betBreakdownTitle {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 4px;
   }
 
   .betQuestion {
-    font-size: 15px;
+    font-size: 10px;
   }
 
   .betPool {
-    font-size: 13px;
+    font-size: 9px;
   }
 
   .betBreakdownHeader {
-    padding: 14px 16px;
+    padding: 6px 8px;
   }
 
   .betBreakdownContent {
-    padding: 0 16px 16px 16px;
+    padding: 0 8px 8px 8px;
   }
 
   .formulaBox {
-    padding: 12px;
+    padding: 6px;
   }
 
   .formula {
-    font-size: 13px;
+    font-size: 9px;
   }
 
   .userPayoutRow {
-    padding: 12px;
+    padding: 6px;
   }
 
   .userPayoutName {
-    font-size: 15px;
+    font-size: 10px;
   }
 
   .userPayoutNet {
-    font-size: 16px;
+    font-size: 12px;
   }
 }
