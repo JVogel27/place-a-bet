@@ -92,8 +92,8 @@ export function useSocket(options: UseSocketOptions = {}) {
   useEffect(() => {
     if (!autoConnect) return;
 
-    // Get server URL from environment or default to same host
-    const serverUrl = import.meta.env.VITE_SERVER_URL || `http://localhost:3001`;
+    // Get server URL from environment or default to same host (empty string = current origin)
+    const serverUrl = import.meta.env.VITE_SERVER_URL || '';
 
     // Create socket connection
     const socket = io(serverUrl, {

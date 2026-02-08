@@ -100,18 +100,7 @@ ls -la server/dist/db/migrate.js  # Migration script for production
 ```bash
 # Replace <pi-ip> with your Pi's IP address (find it with: hostname -I on the Pi)
 # Replace <pi-user> with your Pi username (usually 'pi' or 'jesse')
-rsync -avz --progress \
-  --exclude 'node_modules' \
-  --exclude '.git' \
-  --exclude 'client/node_modules' \
-  --exclude 'server/node_modules' \
-  --exclude 'client/dist' \
-  --exclude 'drizzle.backup' \
-  --exclude '*.md' \
-  --exclude 'setup.sh' \
-  --exclude 'e2e' \
-  /Users/jesse/code/pi-projects/place-a-bet/ \
-  pi@<ip>:~/code/place-a-bet/
+rsync -avz --progress --exclude 'node_modules' --exclude '.git' --exclude 'client/node_modules' --exclude 'server/node_modules' --exclude 'client/dist' --exclude 'drizzle.backup' --exclude '*.md' --exclude 'setup.sh' --exclude 'e2e' --exclude '.env' /Users/jesse/code/pi-projects/place-a-bet/ pi@<ip>:~/code/place-a-bet/
 ```
 
 **What gets transferred**:

@@ -13,7 +13,9 @@ import type {
   Wager
 } from './types';
 
-const API_BASE = import.meta.env.VITE_SERVER_URL || 'http://localhost:3001';
+// Use relative URL in production (empty string) so requests go to same host as the page
+// In development, VITE_SERVER_URL can be set to 'http://localhost:3001' if needed
+const API_BASE = import.meta.env.VITE_SERVER_URL ?? '';
 
 /**
  * Base fetch wrapper with error handling

@@ -140,12 +140,49 @@ function App() {
     return (
       <div className={styles.app}>
         <div className={styles.header}>
-          <h1 className={styles.title}>🎲 Place-A-Bet</h1>
+          <div className={styles.headerTop}>
+            <h1 className={styles.title}>🎲 Place-A-Bet</h1>
+            <button
+              className={`${styles.hostButton} ${isHostMode ? styles.hostButtonActive : ''}`}
+              onClick={handleHostModeToggle}
+            >
+              {isHostMode ? '👑 Host Mode' : '🔑 Host'}
+            </button>
+          </div>
         </div>
         <div className={styles.noParty}>
           <p>No active party found.</p>
           <p>Ask the host to create a party to get started!</p>
         </div>
+
+        {/* Host Actions for creating first party */}
+        {isHostMode && hostPin && (
+          <div className={styles.hostActions}>
+            <button
+              className={`${styles.actionButton} ${styles.actionButtonPrimary}`}
+              onClick={() => setShowCreateParty(true)}
+            >
+              + Create Party
+            </button>
+          </div>
+        )}
+
+        {/* Modals */}
+        {showPinEntry && (
+          <PinEntry
+            title="Enter Host PIN"
+            onSuccess={handlePinSuccess}
+            onCancel={() => setShowPinEntry(false)}
+          />
+        )}
+
+        {showCreateParty && hostPin && (
+          <CreatePartyForm
+            hostPin={hostPin}
+            onSuccess={handleCreatePartySuccess}
+            onCancel={() => setShowCreateParty(false)}
+          />
+        )}
       </div>
     );
   }
