@@ -1,11 +1,11 @@
 import { Router, Request, Response } from 'express';
 import { eq, and } from 'drizzle-orm';
-import { db } from '../db/index';
-import { parties, bets, betOptions, wagers, settlements } from '../db/schema';
-import { createBetSchema, settleBetSchema, closeBetSchema, formatZodError } from '../validation/schemas';
-import { calculatePayouts } from '../utils/payout-calculator';
-import { io } from '../index';
-import { emitBetCreated, emitBetUpdated, emitSettlementComplete } from '../websocket/events';
+import { db } from '../db/index.js';
+import { parties, bets, betOptions, wagers, settlements } from '../db/schema.js';
+import { createBetSchema, settleBetSchema, closeBetSchema, formatZodError } from '../validation/schemas.js';
+import { calculatePayouts } from '../utils/payout-calculator.js';
+import { io } from '../index.js';
+import { emitBetCreated, emitBetUpdated, emitSettlementComplete } from '../websocket/events.js';
 
 const router = Router();
 

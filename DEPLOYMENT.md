@@ -2,191 +2,261 @@
 
 This guide provides step-by-step instructions for deploying Place-A-Bet to a Raspberry Pi for production use.
 
+**Deployment Strategy**: Build on your Mac (fast), transfer to Raspberry Pi (simple).
+
+---
+
+## Quick Overview
+
+The deployment process is split into two parts:
+
+1. **Build on your Mac** (Steps 1-3)
+   - Install dependencies
+   - Generate database migrations
+   - Build production bundle
+   - Transfer files to Pi
+
+2. **Deploy on Raspberry Pi** (Steps 4-14)
+   - Setup Raspberry Pi OS and Node.js
+   - Install production dependencies
+   - Configure environment
+   - Run migrations
+   - Start application with PM2
+
+**Benefits of this approach**:
+- ✅ Much faster builds (Mac is faster than Pi)
+- ✅ Simpler Pi setup (no build tools needed)
+- ✅ Smaller installation on Pi
+- ✅ Same workflow for updates
+
 ---
 
 ## Prerequisites
 
-### Hardware Requirements
+### Development Machine (Mac)
+- **Node.js v18+** (for building the application)
+- **npm v9+**
+- **SSH access** to Raspberry Pi (optional but recommended)
+
+### Raspberry Pi Requirements
 - **Raspberry Pi 3+ or newer** (Pi 4/5 recommended for better performance)
 - **MicroSD card** (16GB or larger)
 - **Power supply** for Raspberry Pi
 - **Network connection** (Ethernet or WiFi)
-
-### Software Requirements
 - **Raspberry Pi OS** (Bullseye or newer)
-- **Node.js v20 LTS** (will be installed below)
-- **Git** (for cloning the repository)
+- **Node.js v20 LTS** (runtime only - no build tools needed)
 
 ---
 
-## Step 1: Prepare the Raspberry Pi
+## Part 1: Build on Your Mac
 
-### 1.1 Install Raspberry Pi OS
-1. Download [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
-2. Flash Raspberry Pi OS (64-bit recommended) to your SD card
-3. Boot up the Pi and complete initial setup
-4. Enable SSH if you want remote access:
-   ```bash
-   sudo raspi-config
-   # Navigate to Interface Options > SSH > Enable
-   ```
-
-### 1.2 Update System Packages
-```bash
-sudo apt update
-sudo apt upgrade -y
-```
-
-### 1.3 Install Node.js v20
-```bash
-# Install NVM (Node Version Manager)
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-
-# Reload shell configuration
-source ~/.bashrc
-
-# Install Node.js v20 LTS
-nvm install 20
-nvm use 20
-nvm alias default 20
-
-# Verify installation
-node --version  # Should output: v20.x.x
-npm --version   # Should output: v10.x.x or higher
-```
-
----
-
-## Step 2: Transfer the Application to Raspberry Pi
-
-### Option A: Clone from Git Repository
-```bash
-# If your code is in a git repository
-cd ~
-git clone <your-repository-url> place-a-bet
-cd place-a-bet
-```
-
-### Option B: Transfer via rsync (from your development machine)
-```bash
-# From your development machine (replace <pi-ip> with Pi's IP address)
-rsync -avz --exclude 'node_modules' --exclude '.git' \
-  /Users/jesse/code/pi-projects/place-a-bet/ \
-  pi@<pi-ip>:~/place-a-bet/
-```
-
-### Option C: Transfer via SCP
-```bash
-# From your development machine
-scp -r /Users/jesse/code/pi-projects/place-a-bet pi@<pi-ip>:~/
-```
-
----
-
-## Step 3: Install Dependencies
+### Step 1: Install Dependencies
 
 ```bash
-# Navigate to project directory
-cd ~/place-a-bet
+# Navigate to your project directory
+cd /Users/jesse/code/pi-projects/place-a-bet
 
-# Ensure Node.js v20 is active
-nvm use 20
-
-# Install dependencies for all workspaces
+# Install all dependencies (including dev dependencies for building)
 npm install
 ```
 
----
-
-## Step 4: Configure Environment Variables
-
-### 4.1 Create Production .env File
-```bash
-# Copy example env file
-cp .env.example .env
-
-# Edit the file
-nano .env
-```
-
-### 4.2 Set Production Values
-```env
-# Server Configuration
-NODE_ENV=production
-PORT=3001
-
-# Host Authentication
-HOST_PIN=1234  # Change this to your desired 4-digit PIN
-
-# CORS Configuration (optional - restrict to your local network)
-CORS_ORIGIN=*
-
-# Database (SQLite - file will be created automatically)
-# Database will be stored at: ./server/data/place-a-bet.db
-```
-
-**Important**: Change the `HOST_PIN` to a secure 4-digit number. This protects host-only actions like creating parties and settling bets.
-
----
-
-## Step 5: Run Database Migrations
+### Step 2: Generate Database Migrations
 
 ```bash
-# Generate migrations (if not already done)
+# Generate migrations from your database schema
 npm run db:generate --workspace=server
-
-# Run migrations to create database tables
-npm run db:migrate --workspace=server
 ```
 
-This will create the SQLite database at `./server/data/place-a-bet.db`.
+This creates migration files in `server/drizzle/` based on your schema.
 
----
-
-## Step 6: Build for Production
+### Step 3: Build for Production
 
 ```bash
-# Build client and server, then copy client files to server/dist/public
+# Build the entire application for production
 npm run build:prod
 ```
 
 This command:
-1. Builds the React frontend (`client/dist/`)
-2. Compiles TypeScript server code (`server/dist/`)
-3. Copies client build to `server/dist/public/`
+1. Builds the React frontend → `client/dist/`
+2. Compiles TypeScript server → `server/dist/`
+3. Compiles migration script → `server/dist/db/migrate.js`
+4. Copies client build to `server/dist/public/`
 
 **Verify the build**:
 ```bash
-ls -la server/dist/public/  # Should see index.html, assets/, etc.
-ls -la server/dist/         # Should see index.js and other compiled files
+ls -la server/dist/public/        # Should see index.html, assets/, etc.
+ls -la server/dist/index.js       # Server entry point
+ls -la server/dist/db/migrate.js  # Migration script for production
 ```
 
 ---
 
-## Step 7: Install and Configure PM2
+## Part 2: Transfer Built Application to Raspberry Pi
+
+### Step 7: Transfer Files Using rsync
+
+**From your Mac**, transfer the built application to your Raspberry Pi:
+
+```bash
+# Replace <pi-ip> with your Pi's IP address (find it with: hostname -I on the Pi)
+# Replace <pi-user> with your Pi username (usually 'pi' or 'jesse')
+rsync -avz --progress \
+  --exclude 'node_modules' \
+  --exclude '.git' \
+  --exclude 'client/node_modules' \
+  --exclude 'server/node_modules' \
+  --exclude 'client/dist' \
+  --exclude 'drizzle.backup' \
+  --exclude '*.md' \
+  --exclude 'setup.sh' \
+  --exclude 'e2e' \
+  /Users/jesse/code/pi-projects/place-a-bet/ \
+  pi@<ip>:~/code/place-a-bet/
+```
+
+**What gets transferred**:
+- ✅ `server/dist/` - Compiled server code
+- ✅ `server/dist/public/` - Built React frontend
+- ✅ `server/drizzle/` - Database migrations
+- ✅ `server/package.json` - Production dependencies list
+- ✅ `package.json` - Root package.json
+- ✅ `.env` files (if you have them)
+- ✅ All source code (for reference)
+- ❌ `node_modules` - Will install on Pi
+- ❌ `client/dist` - Already copied to `server/dist/public/`
+
+---
+
+## Part 3: Setup and Run on Raspberry Pi
+
+### Step 8: Install Dependencies
+
+**On the Raspberry Pi**, install the dependencies needed to run the app:
+
+```bash
+# SSH into your Pi (replace with your username and IP)
+ssh pi@<pi-ip>
+
+# Navigate to project directory
+cd ~/code/place-a-bet
+
+# Ensure Node.js v20 is active
+nvm use 20
+
+# Install production dependencies
+npm install --omit=dev
+```
+
+**What gets installed**:
+- Runtime dependencies: express, socket.io, drizzle-orm, better-sqlite3, etc.
+- Skips dev dependencies: typescript, vite, tsx, etc. (already used during build)
+
+**Note**: If you get module not found errors, run `npm install` (without --omit=dev) to install all dependencies.
+
+### Step 9: Configure Environment Variables
+
+```bash
+# On the Raspberry Pi
+cd ~/code/place-a-bet
+
+# Copy the example .env file
+cp .env.example .env
+
+# Edit the .env file
+nano .env
+```
+
+Set these production values:
+```env
+# Server Configuration
+PORT=3001
+NODE_ENV=production
+
+# Database (optional - defaults to server/data/place-a-bet.db)
+# Only set this if you want to use a custom location
+# DATABASE_URL=/custom/path/to/database.db
+
+# CORS Configuration
+CORS_ORIGIN=*
+
+# Host Authentication (CHANGE THIS!)
+HOST_PIN=1234
+```
+
+**Important**:
+- Change the `HOST_PIN` to a secure 4-digit number!
+- `DATABASE_URL` is optional - it defaults to `server/data/place-a-bet.db`
+- The `.env` file must be in the **root directory** (`~/code/place-a-bet/`), not in `server/`
+
+### Step 10: Run Database Migrations
+
+```bash
+# On the Raspberry Pi
+cd ~/code/place-a-bet
+
+# Run migrations to create database tables (uses compiled migration script)
+npm run db:migrate:prod --workspace=server
+```
+
+**What this does**:
+- Automatically creates the `server/data/` directory if it doesn't exist
+- Runs the compiled migration script (`server/dist/db/migrate.js`)
+- Creates the SQLite database at `server/data/place-a-bet.db`
+- Sets up all database tables
+
+**Expected output**:
+```
+Database path: /home/jesse/code/place-a-bet/server/dist/../../data/place-a-bet.db
+Migrations folder: /home/jesse/code/place-a-bet/server/dist/../../drizzle
+Created database directory: /home/jesse/code/place-a-bet/server/data
+Running migrations...
+✅ Migrations completed successfully!
+```
+
+---
+
+## Part 4: Start the Application
+
+### Step 11: Install and Configure PM2
 
 PM2 is a process manager that keeps your app running and restarts it on crashes or reboots.
 
-### 7.1 Install PM2 Globally
 ```bash
+# On the Raspberry Pi
+# Install PM2 globally (if not already installed)
 npm install -g pm2
-```
 
-### 7.2 Start the Application with PM2
-```bash
+# Check for any existing place-a-bet processes
+pm2 status
+
+# If you see duplicate "place-a-bet" processes, delete them:
+# pm2 delete <id>  # Replace <id> with the process ID from pm2 status
+
 # Start the app
-cd ~/place-a-bet
+cd ~/code/place-a-bet
 pm2 start npm --name "place-a-bet" -- run start:prod
 
-# View logs
-pm2 logs place-a-bet
+# View logs (watch for startup messages)
+pm2 logs place-a-bet --lines 30
+
+# Should see:
+# 🎲 Place-A-Bet server running on http://localhost:3001
+# 🔌 WebSocket server ready
 
 # Check status
 pm2 status
 ```
 
-### 7.3 Configure Auto-Start on Boot
+**Troubleshooting**: If the app keeps restarting:
+- Check logs: `pm2 logs place-a-bet --lines 50`
+- Make sure migrations ran successfully
+- Verify `server/data/place-a-bet.db` exists
+- Check that all dependencies are installed
+
+### Step 12: Configure Auto-Start on Boot
+
 ```bash
+# On the Raspberry Pi
 # Save current PM2 process list
 pm2 save
 
@@ -200,23 +270,26 @@ pm2 startup
 
 ---
 
-## Step 8: Access the Application
+## Part 5: Access and Test
 
-### 8.1 Find Your Pi's IP Address
+### Step 13: Access the Application
+
+**Find your Pi's IP address**:
 ```bash
+# On the Raspberry Pi
 hostname -I
 # Example output: 192.168.1.100
 ```
 
-### 8.2 Access from Browser
-On any device connected to the same network:
+**Access from any browser** on the same network:
 ```
 http://<pi-ip-address>:3001
 ```
 
 Example: `http://192.168.1.100:3001`
 
-### 8.3 Test the Application
+### Step 14: Test the Application
+
 1. Open the URL in your browser
 2. You should see the Place-A-Bet interface
 3. Enter host mode (default PIN: 1234 unless you changed it)
@@ -227,7 +300,9 @@ Example: `http://192.168.1.100:3001`
 
 ---
 
-## Step 9: Optional - Use Port 80 (No Port Number in URL)
+## Part 6: Optional Configuration
+
+### Optional - Use Port 80 (No Port Number in URL)
 
 If you want to access the app as `http://<pi-ip>` instead of `http://<pi-ip>:3001`:
 
@@ -257,9 +332,11 @@ pm2 restart place-a-bet
 
 ---
 
-## Managing the Application
+## Part 7: Managing and Updating
 
 ### PM2 Commands
+
+**On the Raspberry Pi**:
 ```bash
 # View logs
 pm2 logs place-a-bet
@@ -283,22 +360,60 @@ pm2 status
 pm2 monit
 ```
 
-### Update Application Code
-```bash
-# Pull latest changes (if using git)
-cd ~/place-a-bet
-git pull
+### Updating the Application
 
-# Or transfer new files via rsync/scp
+When you make changes to your code, **rebuild on your Mac** and transfer the new build to the Pi:
+
+#### On Your Mac:
+
+```bash
+# Navigate to project directory
+cd /Users/jesse/code/pi-projects/place-a-bet
+
+# Pull latest changes (if using git)
+git pull
 
 # Install new dependencies (if package.json changed)
 npm install
 
-# Rebuild
+# Regenerate migrations (if schema changed)
+npm run db:generate --workspace=server
+
+# Rebuild for production
 npm run build:prod
+
+# Transfer to Raspberry Pi (replace <pi-user> and <pi-ip>)
+rsync -avz --progress \
+  --exclude 'node_modules' \
+  --exclude '.git' \
+  --exclude 'client/node_modules' \
+  --exclude 'server/node_modules' \
+  --exclude 'client/dist' \
+  --exclude 'drizzle.backup' \
+  /Users/jesse/code/pi-projects/place-a-bet/ \
+  <pi-user>@<pi-ip>:~/code/place-a-bet/
+```
+
+#### On the Raspberry Pi:
+
+```bash
+# SSH into Pi (replace with your username and IP)
+ssh jesse@<pi-ip>
+
+# Navigate to project
+cd ~/code/place-a-bet
+
+# Install new dependencies (if package.json changed)
+npm install --omit=dev
+
+# Run new migrations (if schema changed)
+npm run db:migrate:prod --workspace=server
 
 # Restart with PM2
 pm2 restart place-a-bet
+
+# Check logs to verify
+pm2 logs place-a-bet
 ```
 
 ### Database Backup
@@ -491,30 +606,94 @@ journalctl -u pm2-pi
 ```
 
 ### Common Issues
-1. **Port 3001 in use**: Change `PORT` in `.env` to 3002
-2. **Database locked**: Make sure only one instance is running (`pm2 status`)
-3. **Build files missing**: Re-run `npm run build:prod`
-4. **Node version wrong**: Run `nvm use 20`
+
+#### 1. Module Not Found Errors
+```
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module './websocket/events'
+```
+**Solution**: The built files are missing `.js` extensions. Rebuild on Mac with latest code and transfer again.
+
+#### 2. Cannot Find Package 'drizzle-orm'
+```
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'drizzle-orm'
+```
+**Solution**: Run `npm install --omit=dev` on the Pi. If still failing, run `npm install` (without --omit=dev).
+
+#### 3. Database Directory Does Not Exist
+```
+TypeError: Cannot open database because the directory does not exist
+```
+**Solution**: Make sure `.env` file exists in the root directory. The migration script will auto-create the directory.
+```bash
+cd ~/code/place-a-bet
+cp .env.example .env
+nano .env  # Set your HOST_PIN
+npm run db:migrate:prod --workspace=server
+pm2 restart place-a-bet
+```
+
+#### 4. Duplicate PM2 Processes
+Multiple "place-a-bet" entries showing in `pm2 status`.
+
+**Solution**:
+```bash
+pm2 delete 1  # Delete by ID
+pm2 delete 2
+pm2 start npm --name "place-a-bet" -- run start:prod
+pm2 save
+```
+
+#### 5. Port 3001 Already in Use
+**Solution**: Change `PORT` in `.env` to 3002, or stop the other process
+
+#### 6. Database Locked
+**Solution**: Make sure only one instance is running (`pm2 status`), delete duplicates
+
+#### 7. Node Version Wrong
+**Solution**: Run `nvm use 20` on the Pi
 
 ---
 
 ## Summary
 
-**Deployment Steps**:
-1. ✅ Prepare Raspberry Pi (OS + Node.js v20)
-2. ✅ Transfer application files
-3. ✅ Install dependencies (`npm install`)
-4. ✅ Configure `.env` (set `HOST_PIN`)
-5. ✅ Run migrations (`npm run db:migrate`)
-6. ✅ Build production bundle (`npm run build:prod`)
-7. ✅ Start with PM2 (`pm2 start npm --name "place-a-bet" -- run start:prod`)
-8. ✅ Configure auto-start (`pm2 startup` + `pm2 save`)
-9. ✅ Access from network (`http://<pi-ip>:3001`)
+**Quick Deployment Checklist**:
+
+### On Your Mac:
+1. ✅ Install dependencies: `npm install`
+2. ✅ Generate migrations: `npm run db:generate --workspace=server`
+3. ✅ Build for production: `npm run build:prod`
+4. ✅ Transfer to Pi: `rsync -avz --exclude 'node_modules' ... jesse@<pi-ip>:~/code/place-a-bet/`
+
+### On Raspberry Pi:
+5. ✅ Install Raspberry Pi OS + Node.js v20
+6. ✅ Install production dependencies: `npm install --omit=dev`
+7. ✅ Configure `.env` in root: `cp .env.example .env` (set `HOST_PIN`)
+8. ✅ Run migrations: `npm run db:migrate:prod --workspace=server`
+9. ✅ Start with PM2: `pm2 start npm --name "place-a-bet" -- run start:prod`
+10. ✅ Configure auto-start: `pm2 startup` + `pm2 save`
+11. ✅ Access from network: `http://<pi-ip>:3001`
 
 **The app is now running and ready for your party!** 🎲
 
+**Common Deployment Paths**:
+- Project on Pi: `~/code/place-a-bet/`
+- Database: `~/code/place-a-bet/server/data/place-a-bet.db`
+- Migrations: `~/code/place-a-bet/server/drizzle/`
+- Config: `~/code/place-a-bet/server/.env`
+
 ---
 
-**Document Version**: 1.0
-**Last Updated**: 2026-02-04
+**Document Version**: 2.2
+**Last Updated**: 2026-02-07
 **Tested On**: Raspberry Pi 4 with Node.js v20.20.0
+**Build Strategy**: Build on Mac, deploy to Pi
+
+**Recent Updates (v2.2)**:
+- **MAJOR FIX**: Environment variables now load before database connection
+- Added `dotenv.config()` to `db/index.ts` to fix loading order issues
+- Migration script now uses absolute paths and auto-creates directories
+- Simplified `.env` configuration - `DATABASE_URL` is now optional
+- Default database path is `server/data/place-a-bet.db` (relative to compiled code)
+- `.env` file must be in project root, not in `server/` subdirectory
+- Updated `.env.example` with clearer instructions
+- Removed manual `mkdir` step (migration handles it automatically)

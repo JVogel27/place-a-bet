@@ -3,7 +3,7 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { createServer } from 'http';
-import { initializeSocketIO } from './websocket/events';
+import { initializeSocketIO } from './websocket/events.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -44,9 +44,9 @@ app.get('/health', (_req, res) => {
 });
 
 // API routes
-import partiesRouter from './routes/parties';
-import betsRouter from './routes/bets';
-import wagersRouter from './routes/wagers';
+import partiesRouter from './routes/parties.js';
+import betsRouter from './routes/bets.js';
+import wagersRouter from './routes/wagers.js';
 
 app.use('/api/parties', partiesRouter);
 app.use('/api/bets', betsRouter);

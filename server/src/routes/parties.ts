@@ -1,10 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { eq, sql, inArray } from 'drizzle-orm';
-import { db } from '../db/index';
-import { parties, bets, wagers, settlements } from '../db/schema';
-import { createPartySchema, formatZodError } from '../validation/schemas';
-import { io } from '../index';
-import { emitPartyCreated } from '../websocket/events';
+import { db } from '../db/index.js';
+import { parties, bets, wagers, settlements } from '../db/schema.js';
+import { createPartySchema, formatZodError } from '../validation/schemas.js';
+import { io } from '../index.js';
+import { emitPartyCreated } from '../websocket/events.js';
 
 const router = Router();
 

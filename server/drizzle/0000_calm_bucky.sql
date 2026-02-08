@@ -1,11 +1,9 @@
-CREATE TABLE `parties` (
+CREATE TABLE `bet_options` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`name` text NOT NULL,
-	`date` text NOT NULL,
-	`description` text,
-	`status` text DEFAULT 'active' NOT NULL,
+	`bet_id` integer NOT NULL,
+	`label` text NOT NULL,
 	`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	`updated_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL
+	FOREIGN KEY (`bet_id`) REFERENCES `bets`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `bets` (
@@ -18,26 +16,17 @@ CREATE TABLE `bets` (
 	`winning_option_id` integer,
 	`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	`updated_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	FOREIGN KEY (`party_id`) REFERENCES `parties`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
+	FOREIGN KEY (`party_id`) REFERENCES `parties`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE TABLE `bet_options` (
+CREATE TABLE `parties` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`bet_id` integer NOT NULL,
-	`label` text NOT NULL,
+	`name` text NOT NULL,
+	`date` text NOT NULL,
+	`description` text,
+	`status` text DEFAULT 'active' NOT NULL,
 	`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	FOREIGN KEY (`bet_id`) REFERENCES `bets`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
-);
---> statement-breakpoint
-CREATE TABLE `wagers` (
-	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`bet_id` integer NOT NULL,
-	`option_id` integer NOT NULL,
-	`user_name` text NOT NULL,
-	`amount` real NOT NULL,
-	`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	FOREIGN KEY (`bet_id`) REFERENCES `bets`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION,
-	FOREIGN KEY (`option_id`) REFERENCES `bet_options`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
+	`updated_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `settlements` (
@@ -48,5 +37,16 @@ CREATE TABLE `settlements` (
 	`payout` real NOT NULL,
 	`net_win_loss` real NOT NULL,
 	`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	FOREIGN KEY (`bet_id`) REFERENCES `bets`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
+	FOREIGN KEY (`bet_id`) REFERENCES `bets`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE TABLE `wagers` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`bet_id` integer NOT NULL,
+	`option_id` integer NOT NULL,
+	`user_name` text NOT NULL,
+	`amount` real NOT NULL,
+	`created_at` text DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	FOREIGN KEY (`bet_id`) REFERENCES `bets`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`option_id`) REFERENCES `bet_options`(`id`) ON UPDATE no action ON DELETE no action
 );
