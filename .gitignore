@@ -41,3 +41,10 @@ Thumbs.db
 .cache/
 
 DEPLOYMENT.md
+
+# Documentation files (internal only)
+REVIEW_SUMMARY.md
+HANDOFF_PROMPT.md
+IMPLEMENTATION_TASKS.md
+SETUP_COMPLETE.md
+QUICKSTART.md
