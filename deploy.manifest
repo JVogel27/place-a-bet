@@ -1,0 +1,6 @@
+# Home-server CI/CD deploy contract — see service-config-convention.md
+APP_TYPE=server
+BUILD_CMD="npm run build:prod"
+TEST_CMD="npm run test:server"
+START_CMD="bash scripts/start-prod.sh"
+HEALTH_PATH="/health"
