@@ -4,6 +4,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
+    // src/db/index.ts picks the in-memory test DB off NODE_ENV; vitest otherwise keeps whatever the shell exports
+    env: { NODE_ENV: 'test' },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
