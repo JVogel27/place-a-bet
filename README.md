@@ -68,7 +68,7 @@ npm run dev:client
 
 ## Testing
 
-### Run All Tests
+### Run Unit Tests (Server + Client)
 
 ```bash
 npm run test
@@ -87,10 +87,18 @@ npm run test:client
 npm run test:client:watch    # Watch mode
 npm run test:client:coverage # With coverage
 
-# E2E tests
+# E2E tests (Chromium desktop + Pixel 5 emulation)
 npm run test:e2e
 npm run test:e2e:ui         # With Playwright UI
 npm run test:e2e:debug      # Debug mode
+```
+
+The E2E suite starts the dev servers itself; the API runs against a throwaway SQLite database in the OS temp directory.
+
+### Lint
+
+```bash
+npm run lint
 ```
 
 ### CI Mode (All Tests + Coverage)
