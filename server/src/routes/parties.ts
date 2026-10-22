@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { eq, sql, inArray } from 'drizzle-orm';
 import { db } from '../db/index.js';
 import { parties, bets, wagers, settlements } from '../db/schema.js';
@@ -11,7 +11,7 @@ const router = Router();
 /**
  * Middleware to verify host PIN
  */
-function verifyHostPin(req: Request, res: Response, next: Function) {
+function verifyHostPin(req: Request, res: Response, next: NextFunction) {
   const hostPin = req.body.hostPin || req.query.hostPin;
   const expectedPin = process.env.HOST_PIN;
 

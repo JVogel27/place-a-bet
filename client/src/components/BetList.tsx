@@ -94,25 +94,21 @@ export function BetList({
   }) => {
     if (!selectedBet) return;
 
-    try {
-      await createWager(selectedBet.id, data);
+    // Errors propagate to the WagerForm component, which displays them
+    await createWager(selectedBet.id, data);
 
-      // Update recent user names
-      if (onUserWagerPlaced) {
-        onUserWagerPlaced(data.userName);
-      }
-
-      // Close form and refresh bets
-      setShowWagerForm(false);
-      setSelectedBet(null);
-      fetchBets();
-
-      // Success feedback
-      console.log('Wager placed successfully!');
-    } catch (err) {
-      // Error is handled in WagerForm component
-      throw err;
+    // Update recent user names
+    if (onUserWagerPlaced) {
+      onUserWagerPlaced(data.userName);
     }
+
+    // Close form and refresh bets
+    setShowWagerForm(false);
+    setSelectedBet(null);
+    fetchBets();
+
+    // Success feedback
+    console.log('Wager placed successfully!');
   };
 
   const handleCloseForm = () => {
