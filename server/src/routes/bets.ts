@@ -28,7 +28,7 @@ router.get('/', async (req: Request, res: Response) => {
     }
 
     // Build query
-    let query = db
+    const query = db
       .select()
       .from(bets)
       .where(eq(bets.partyId, activeParty.id));

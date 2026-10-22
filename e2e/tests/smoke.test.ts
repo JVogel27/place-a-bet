@@ -4,19 +4,23 @@ test.describe('Smoke Tests', () => {
   test('app loads and displays title', async ({ page }) => {
     await page.goto('/');
 
-    // Check that the main title is visible
+    await expect(page).toHaveTitle('Place-A-Bet');
     await expect(page.getByRole('heading', { name: /Place-A-Bet/ })).toBeVisible();
 
-    // Check that the description is visible
-    await expect(page.getByText('A simple betting app for parties and events')).toBeVisible();
+    // The host toggle is the one control rendered whether or not a party is active
+    await expect(page.getByRole('button', { name: /Host/ })).toBeVisible();
   });
 
   test('API connection works', async ({ page }) => {
+    const partiesResponse = page.waitForResponse(res => res.url().endsWith('/api/parties'));
     await page.goto('/');
 
-    // Wait for API status to update
-    await expect(page.getByText(/API Status:/)).toBeVisible();
-    await expect(page.getByText(/API is working!/)).toBeVisible({ timeout: 5000 });
+    const response = await partiesResponse;
+    expect(response.ok()).toBe(true);
+    expect(Array.isArray(await response.json())).toBe(true);
+
+    // Once parties load, the loading screen gives way to the app
+    await expect(page.getByText('Loading...')).toBeHidden();
   });
 
   test('app is responsive on mobile', async ({ page }) => {

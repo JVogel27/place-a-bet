@@ -236,7 +236,7 @@ describe('Bets API', () => {
         updatedAt: new Date().toISOString()
       }).returning();
 
-      const [option1, option2] = await db.insert(betOptions).values([
+      const [option1] = await db.insert(betOptions).values([
         { betId: bet.id, label: 'Yes', createdAt: new Date().toISOString() },
         { betId: bet.id, label: 'No', createdAt: new Date().toISOString() }
       ]).returning();
@@ -276,7 +276,6 @@ describe('Bets API', () => {
 
   describe('POST /api/bets/:id/close', () => {
     let testBet: any;
-    let testOptions: any[];
 
     beforeEach(async () => {
       [testBet] = await db.insert(bets).values({
@@ -289,7 +288,7 @@ describe('Bets API', () => {
         updatedAt: new Date().toISOString()
       }).returning();
 
-      testOptions = await db.insert(betOptions).values([
+      await db.insert(betOptions).values([
         { betId: testBet.id, label: 'Yes', createdAt: new Date().toISOString() },
         { betId: testBet.id, label: 'No', createdAt: new Date().toISOString() }
       ]).returning();
