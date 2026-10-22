@@ -5,7 +5,8 @@
   "private": true,
   "workspaces": [
     "server",
-    "client"
+    "client",
+    "e2e"
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
