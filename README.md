@@ -4,19 +4,16 @@ A simple, fun web-based betting app for parties and events. Designed to run on a
 
 ## Prerequisites
 
-- **Node.js v20.x LTS** (required for better-sqlite3 compatibility)
-- npm v9.0.0+
+- **Node 22**
+- npm 11
 
-⚠️ **Important**: This project requires Node v20 LTS. Node v25 is not yet supported by `better-sqlite3`.
+The `engines` field in `package.json` (`node >=22 <23`, `npm >=11 <12`) states the supported platform, and `engine-strict=true` in `.npmrc` makes `npm install` / `npm ci` refuse any other version.
 
 ## Setup
 
-### 1. Switch to Node v20 (if using nvm)
+### 1. Use Node 22
 
-```bash
-nvm install 20
-nvm use 20
-```
+Run Node 22 with npm 11; `engines` + `engine-strict` reject any other version at install time.
 
 ### 2. Install Dependencies
 
@@ -177,7 +174,7 @@ pm2 stop place-a-bet
 ### "better-sqlite3" Build Errors
 
 If you encounter build errors with `better-sqlite3`:
-1. Make sure you're using Node v20 LTS (not v22, v25, etc.)
+1. Make sure you're using Node 22 (`engines` + `engine-strict` enforce it)
 2. Clean and reinstall:
    ```bash
    rm -rf node_modules package-lock.json
